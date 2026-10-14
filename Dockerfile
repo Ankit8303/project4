@@ -1,6 +1,5 @@
-# Three stages: a builder that installs deps with uv, an indexer that bakes the
-# ChromaDB vector index + embedding-model cache at build time, and a slim runtime.
-# (No BuildKit cache-mounts — Cloud Build's classic docker builder doesn't support them.)
+# Three stages: builder installs dependencies, indexer builds the law vector index
+# and caches the embedding model, and runtime runs the FastAPI application.
 
 FROM python:3.11-slim AS builder
 
@@ -10,17 +9,15 @@ ENV UV_LINK_MODE=copy \
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 WORKDIR /app
 
-# Install runtime dependencies first (cached layer keyed on the lockfile).
-COPY pyproject.toml uv.lock README.md ./
+# README.md is not present at the repository root, so do not COPY it.
+COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
-# Install the project itself (editable, src layout).
+# Install the project itself (src layout).
 COPY src ./src
 RUN uv sync --frozen --no-dev
 
 
-# Bake the vector index and cache the embedding model (bake-at-build: no runtime
-# ingestion, no persistent disk needed). Ingestion is fully local — no API key.
 FROM builder AS indexer
 
 ENV PATH="/app/.venv/bin:$PATH" \
@@ -46,7 +43,6 @@ RUN useradd --create-home --uid 1000 app
 COPY --from=builder /app/.venv /app/.venv
 COPY src ./src
 COPY data/laws ./data/laws
-# Pre-built index + model cache from the indexer stage.
 COPY --from=indexer /app/data/chroma ./data/chroma
 COPY --from=indexer /app/.cache/huggingface ./.cache/huggingface
 
