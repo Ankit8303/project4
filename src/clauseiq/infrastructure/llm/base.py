@@ -236,48 +236,70 @@ class GeminiClient:
     async def _attempt(
         self, client: Any, provider: str, prompt: str, config: Any
     ) -> Result[Any, LLMError]:
-        """Run a generation against one provider, with transient-error retry."""
-        delay = self._base_delay
-        for attempt in range(self._max_retries):
-            try:
-                response = await client.aio.models.generate_content(
-                    model=self.model_name, contents=prompt, config=config
-                )
-            except Exception as exc:  # google-genai boundary
-                code = getattr(exc, "code", None)
-                if self._is_transient(code) and attempt < self._max_retries - 1:
-                    server_delay = retry_delay_seconds(exc)
-                    wait = min(
-                        delay if server_delay is None else server_delay, self._max_retry_delay
+        """Run a generation against one provider, with model-fallback and transient retry."""
+        models_to_try = [self.model_name]
+        for fallback in ["gemini-3.5-flash-lite", "gemini-flash-lite-latest"]:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
+
+        last_exc: Exception | None = None
+        for current_model in models_to_try:
+            delay = self._base_delay
+            for attempt in range(self._max_retries):
+                try:
+                    response = await client.aio.models.generate_content(
+                        model=current_model, contents=prompt, config=config
                     )
-                    log.warning(
-                        "llm_retry",
-                        model=self.model_name,
+                except Exception as exc:  # google-genai boundary
+                    last_exc = exc
+                    code = getattr(exc, "code", None)
+
+                    # If quota exhausted (429) or model unavailable/deprecated (404), fall back to next model
+                    if code in (404, 429) and current_model != models_to_try[-1]:
+                        next_idx = models_to_try.index(current_model) + 1
+                        log.warning(
+                            "llm_model_fallback",
+                            failed_model=current_model,
+                            next_model=models_to_try[next_idx],
+                            code=code,
+                        )
+                        break
+
+                    if self._is_transient(code) and attempt < self._max_retries - 1:
+                        server_delay = retry_delay_seconds(exc)
+                        if server_delay and server_delay > 5.0 and current_model != models_to_try[-1]:
+                            next_idx = models_to_try.index(current_model) + 1
+                            log.warning(
+                                "llm_model_fallback_quota_delay",
+                                failed_model=current_model,
+                                next_model=models_to_try[next_idx],
+                                delay_s=server_delay,
+                            )
+                            break
+                        wait = min(
+                            delay if server_delay is None else server_delay, self._max_retry_delay
+                        )
+                        await asyncio.sleep(wait)
+                        delay *= 2
+                        continue
+
+                    log.error(
+                        "llm_call_failed",
+                        model=current_model,
                         provider=provider,
-                        attempt=attempt,
                         code=code,
-                        wait_s=round(wait, 2),
-                        server_hinted=server_delay is not None,
+                        error=str(exc),
                     )
-                    await asyncio.sleep(wait)
-                    delay *= 2
-                    continue
-                log.error(
-                    "llm_call_failed",
-                    model=self.model_name,
-                    provider=provider,
-                    code=code,
-                    error=str(exc),
-                )
-                return Err(
-                    LLMError(
-                        "generation_failed", cause=exc, model=self.model_name, status_code=code
-                    )
-                )
-            else:
-                self._record_usage(response)
-                return Ok(response)
-        return Err(LLMError("retries_exhausted", model=self.model_name))
+                    break
+                else:
+                    self._record_usage(response)
+                    return Ok(response)
+
+        return Err(
+            LLMError(
+                "generation_failed", cause=last_exc, model=self.model_name
+            )
+        )
 
     def _record_usage(self, response: Any) -> None:
         """Record token usage from a Gemini response into the active accumulator."""
