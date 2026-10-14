@@ -51,7 +51,5 @@ frontend/dist/
 frontend/.vite/
 
 # --- Local scratch / generated artifacts ------------------------------------
-.deepeval/
-
-# --- macOS-style duplicate copies ("filename 2.ext") -------------------------
-* [0-9]*
+# --- Netlify ------------------------------------------------------------------
+.netlify/

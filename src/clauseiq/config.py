@@ -109,7 +109,11 @@ class Settings(BaseSettings):
     # server (5173) and preview (4173); set CLAUSEIQ_CORS_ALLOWED_ORIGINS (JSON
     # list) for deployed frontends. Never use "*" with credentials.
     cors_allowed_origins: list[str] = Field(
-        default_factory=lambda: ["http://localhost:5173", "http://localhost:4173"],
+        default_factory=lambda: [
+            "http://localhost:5173",
+            "http://localhost:4173",
+            "https://clauseiq-app.netlify.app",
+        ],
     )
 
     # --- Runtime / logging ---------------------------------------------------
