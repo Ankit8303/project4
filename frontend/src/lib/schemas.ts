@@ -33,6 +33,9 @@ export const riskFlagSchema = z.object({
   rationale: z.string(),
   confidence: z.number(),
   suggested_action: z.string().nullable().optional(),
+  suggested_revision: z.string().nullable().optional(),
+  negotiation_rationale: z.string().nullable().optional(),
+  negotiation_email_snippet: z.string().nullable().optional(),
   citations: z.array(citationSchema).default([]),
 });
 export type RiskFlag = z.infer<typeof riskFlagSchema>;

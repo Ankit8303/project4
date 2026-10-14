@@ -47,4 +47,32 @@ describe("ClauseCard", () => {
     expect(screen.getByText("Backed by")).toBeInTheDocument();
     expect(screen.getByText(/rests on the analysis alone/)).toBeInTheDocument();
   });
+
+  it("renders redline counter-proposal and negotiation script when available", async () => {
+    render(
+      <ClauseCard
+        flag={flag({
+          suggested_revision: "Deposit shall only be deducted for actual verified damages.",
+          negotiation_rationale: "Aligns with Section 74 penalty restrictions under Indian law.",
+          negotiation_email_snippet: "Regarding clause 3, we request updating the deposit terms...",
+        })}
+      />,
+    );
+
+    expect(screen.getByText("Redline Ready")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: /The entire security deposit/i }));
+
+    expect(screen.getByText("Fair Counter-Proposal (Redline)")).toBeInTheDocument();
+    expect(
+      screen.getByText("Deposit shall only be deducted for actual verified damages."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy Fair Clause/i })).toBeInTheDocument();
+
+    expect(screen.getByText("Ready-to-Send Negotiation Script")).toBeInTheDocument();
+    expect(
+      screen.getByText(/"Regarding clause 3, we request updating the deposit terms..."/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy Email Script/i })).toBeInTheDocument();
+  });
 });

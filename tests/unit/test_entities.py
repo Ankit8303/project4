@@ -114,6 +114,22 @@ def test_risk_flag_validates_confidence() -> None:
         )
 
 
+def test_risk_flag_redline_and_negotiation_fields() -> None:
+    flag = RiskFlag(
+        clause_id="cl1",
+        clause_type=ClauseType.NON_COMPETE,
+        severity=Severity.CRITICAL,
+        rationale="Section 27 void non-compete.",
+        confidence=0.95,
+        suggested_revision="Employee agrees to protect confidential information...",
+        negotiation_rationale="Balances employer IP protection without restricting right to work.",
+        negotiation_email_snippet="Regarding clause 5, under Indian law we suggest...",
+    )
+    assert flag.suggested_revision == "Employee agrees to protect confidential information..."
+    assert "Balances employer" in (flag.negotiation_rationale or "")
+    assert "Regarding clause 5" in (flag.negotiation_email_snippet or "")
+
+
 def test_contract_defaults_and_validation() -> None:
     contract = Contract(id="k1", raw_text="This agreement is made...")
     assert contract.jurisdiction is Jurisdiction.IN_MH

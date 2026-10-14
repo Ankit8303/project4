@@ -45,4 +45,16 @@ describe("schemas", () => {
     const parsed = analysisRequestSchema.parse({ contract_text: "x".repeat(120) });
     expect(parsed.jurisdiction).toBe("IN-MH");
   });
+
+  it("parses optional redline and negotiation fields", () => {
+    const parsed = riskFlagSchema.parse({
+      ...validFlag,
+      suggested_revision: "Fair revision text",
+      negotiation_rationale: "Why it is fair",
+      negotiation_email_snippet: "Dear counterparty...",
+    });
+    expect(parsed.suggested_revision).toBe("Fair revision text");
+    expect(parsed.negotiation_rationale).toBe("Why it is fair");
+    expect(parsed.negotiation_email_snippet).toBe("Dear counterparty...");
+  });
 });

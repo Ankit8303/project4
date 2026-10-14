@@ -82,6 +82,9 @@ class CitationVerifierAgent:
                     citations=tuple(verified),
                     confidence=raw.confidence,
                     suggested_action=raw.suggested_action,
+                    suggested_revision=raw.suggested_revision,
+                    negotiation_rationale=raw.negotiation_rationale,
+                    negotiation_email_snippet=raw.negotiation_email_snippet,
                 )
             )
 

@@ -39,7 +39,10 @@ _SYSTEM = (
     "  5 = critical (egregious / void or illegal under Indian law)\n"
     "Only flag clauses that are genuinely risky. Cite ONLY sections present in the "
     "provided law context, using their law_code and section_number. If no provided "
-    "section applies, return an empty citations list rather than inventing one."
+    "section applies, return an empty citations list rather than inventing one.\n"
+    "For each flagged clause, also draft a legally fair, balanced counter-clause "
+    "(suggested_revision), explain the negotiation rationale, and provide a polite "
+    "email snippet the user can send to negotiate the clause."
 )
 
 _CLAUSE_TYPE_VOCAB = ", ".join(member.value for member in ClauseType)
@@ -47,8 +50,11 @@ _CLAUSE_TYPE_VOCAB = ", ".join(member.value for member in ClauseType)
 _INSTRUCTION = (
     "Return a flag for each RISKY clause (skip benign ones). Each flag needs: "
     "clause_index, clause_type, severity_score (1-5), a concise rationale, "
-    "confidence (0-1), an optional suggested_action, and citations drawn only from "
-    "the law shown under that clause.\n"
+    "confidence (0-1), an optional suggested_action, citations drawn only from "
+    "the law shown under that clause, plus:\n"
+    "- suggested_revision: a clear, enforceable, and balanced replacement clause text.\n"
+    "- negotiation_rationale: 1-2 sentences on why this revision protects the weaker party while remaining fair to the counterparty.\n"
+    "- negotiation_email_snippet: a polite, professional negotiation email paragraph requesting this change.\n"
     f"clause_type MUST be exactly one of: {_CLAUSE_TYPE_VOCAB}. "
     "Pick the closest category; use 'other' only if none genuinely fit.\n\n"
 )

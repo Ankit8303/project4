@@ -94,6 +94,28 @@ def test_risk_flag_out_exposes_score_and_label() -> None:
     assert out.citations[0].section_number == "27"
 
 
+def test_risk_flag_out_carries_redline_and_negotiation() -> None:
+    flag = RiskFlag(
+        clause_id="c1",
+        clause_type=ClauseType.LOCK_IN,
+        severity=Severity.HIGH,
+        rationale="11-month lock-in is one-sided.",
+        confidence=0.85,
+        suggested_revision="Either party may terminate upon giving 30 days written notice.",
+        negotiation_rationale="Allows fair exit for tenant while giving landlord adequate notice.",
+        negotiation_email_snippet="Regarding clause 4, we propose standard 30 days mutual notice...",
+    )
+    out = RiskFlagOut.from_domain(
+        flag,
+        clause_excerpt="Tenant cannot terminate for 11 months.",
+        clause_heading="4. Lock-in",
+        citations=[],
+    )
+    assert out.suggested_revision == "Either party may terminate upon giving 30 days written notice."
+    assert "fair exit" in (out.negotiation_rationale or "")
+    assert "standard 30 days" in (out.negotiation_email_snippet or "")
+
+
 def test_contract_analysis_build_computes_highest_severity() -> None:
     flags = [
         RiskFlagOut(

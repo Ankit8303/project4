@@ -170,6 +170,9 @@ class RiskFlag:
     citations: tuple[Citation, ...] = ()
     confidence: float = 0.0
     suggested_action: str | None = None
+    suggested_revision: str | None = None
+    negotiation_rationale: str | None = None
+    negotiation_email_snippet: str | None = None
 
     def __post_init__(self) -> None:
         _require(bool(self.clause_id.strip()), "RiskFlag.clause_id must be non-empty")

@@ -74,6 +74,18 @@ class AnalyzedFlag(BaseModel):
     rationale: str = Field(min_length=1)
     confidence: float = Field(ge=0.0, le=1.0)
     suggested_action: str | None = None
+    suggested_revision: str | None = Field(
+        default=None,
+        description="A fair, legally balanced counter-clause to propose in place of the risky clause.",
+    )
+    negotiation_rationale: str | None = Field(
+        default=None,
+        description="Concise legal/commercial explanation for why this revision is fair to both parties.",
+    )
+    negotiation_email_snippet: str | None = Field(
+        default=None,
+        description="A polite, ready-to-copy email paragraph the user can send in negotiations.",
+    )
     citations: list[ProposedCitation] = Field(default_factory=list)
 
 
@@ -137,6 +149,9 @@ class RiskFlagOut(BaseModel):
     rationale: str
     confidence: float
     suggested_action: str | None = None
+    suggested_revision: str | None = None
+    negotiation_rationale: str | None = None
+    negotiation_email_snippet: str | None = None
     citations: list[CitationOut] = Field(default_factory=list)
 
     @classmethod
@@ -158,6 +173,9 @@ class RiskFlagOut(BaseModel):
             rationale=flag.rationale,
             confidence=flag.confidence,
             suggested_action=flag.suggested_action,
+            suggested_revision=flag.suggested_revision,
+            negotiation_rationale=flag.negotiation_rationale,
+            negotiation_email_snippet=flag.negotiation_email_snippet,
             citations=citations,
         )
 
