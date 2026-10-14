@@ -14,8 +14,10 @@ from fastapi.testclient import TestClient
 
 from clauseiq.application.schemas import (
     CitationOut,
+    ClauseDiffItem,
     ContractAnalysis,
     ContractChatResponse,
+    ContractDiffResponse,
     LawSectionOut,
     RiskFlagOut,
 )
@@ -33,6 +35,7 @@ from clauseiq.domain.value_objects import Jurisdiction, LawCode
 from clauseiq.interfaces.api.dependencies import (
     get_contract_analyzer,
     get_contract_chat_service,
+    get_contract_diff_service,
     get_law_repository,
 )
 from clauseiq.interfaces.api.main import create_app
@@ -140,8 +143,42 @@ class _StubChatService:
         )
 
 
+class _StubDiffService:
+    def __init__(self, *, error: str | None = None, guardrail: str | None = None) -> None:
+        self._error = error
+        self._guardrail = guardrail
+
+    async def compare(self, request: object) -> Result[ContractDiffResponse, ClauseIQError]:
+        if self._guardrail is not None:
+            return Err(GuardrailError(self._guardrail))
+        if self._error is not None:
+            return Err(AnalysisError(self._error))
+        return Ok(
+            ContractDiffResponse(
+                summary="V2 alters notice period and adds broad indemnity.",
+                risk_verdict="more_risky",
+                total_changes=2,
+                sneaky_traps_count=1,
+                changes=[
+                    ClauseDiffItem(
+                        change_type="modified",
+                        clause_title="Termination Notice",
+                        original_text="30 days mutual notice",
+                        revised_text="7 days for client, 60 days for vendor",
+                        is_sneaky_risk=True,
+                        risk_explanation="Asymmetric lock-in",
+                        recommendation="Demand parity",
+                    )
+                ],
+            )
+        )
+
+
 def _client(
-    *, analyzer: _StubAnalyzer | None = None, chat_service: _StubChatService | None = None
+    *,
+    analyzer: _StubAnalyzer | None = None,
+    chat_service: _StubChatService | None = None,
+    diff_service: _StubDiffService | None = None,
 ) -> TestClient:
     app = create_app()
     app.dependency_overrides[get_contract_analyzer] = lambda: analyzer or _StubAnalyzer()
@@ -149,7 +186,11 @@ def _client(
     app.dependency_overrides[get_contract_chat_service] = (
         lambda: chat_service or _StubChatService()
     )
+    app.dependency_overrides[get_contract_diff_service] = (
+        lambda: diff_service or _StubDiffService()
+    )
     return TestClient(app)
+
 
 
 def test_analyze_returns_structured_result() -> None:
@@ -277,4 +318,48 @@ def test_contract_chat_error_mapping() -> None:
             },
         )
     assert response.status_code == 503
+
+
+def test_contract_compare_success() -> None:
+    with _client() as client:
+        response = client.post(
+            "/api/v1/compare",
+            json={
+                "original_text": _CONTRACT,
+                "revised_text": _CONTRACT + " Landlord may terminate with zero notice.",
+                "jurisdiction": "IN-MH",
+            },
+        )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["risk_verdict"] == "more_risky"
+    assert data["sneaky_traps_count"] == 1
+    assert len(data["changes"]) == 1
+    assert data["changes"][0]["is_sneaky_risk"] is True
+
+
+def test_contract_compare_validation_error() -> None:
+    with _client() as client:
+        response = client.post(
+            "/api/v1/compare",
+            json={
+                "original_text": "short",
+                "revised_text": "also too short",
+            },
+        )
+    assert response.status_code == 422
+
+
+def test_contract_compare_guardrail_rejection() -> None:
+    with _client(diff_service=_StubDiffService(guardrail="prompt_injection_detected")) as client:
+        response = client.post(
+            "/api/v1/compare",
+            json={
+                "original_text": _CONTRACT,
+                "revised_text": _CONTRACT,
+            },
+        )
+    assert response.status_code == 422
+    assert response.json()["detail"]["reason"] == "prompt_injection_detected"
+
 

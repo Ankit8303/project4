@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const Landing = lazy(() => import("@/routes/index"));
 const Analysis = lazy(() => import("@/routes/analysis"));
+const Compare = lazy(() => import("@/routes/compare"));
 const About = lazy(() => import("@/routes/about"));
 
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ export function App() {
                   <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route path="/analysis/:id" element={<Analysis />} />
+                    <Route path="/compare" element={<Compare />} />
                     <Route path="/about" element={<About />} />
                   </Routes>
                 </Suspense>

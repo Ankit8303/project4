@@ -16,6 +16,9 @@ export function Layout({ children }: { children: ReactNode }) {
           </Link>
           <nav className="flex items-center gap-1">
             <Button asChild variant="ghost" size="sm">
+              <Link to="/compare">Compare Drafts</Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm">
               <Link to="/about">About</Link>
             </Button>
             <ThemeToggle />

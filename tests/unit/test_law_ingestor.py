@@ -17,6 +17,7 @@ from clauseiq.infrastructure.ingestion.law_ingestor import (
     build_corpus_from_pdf,
     corpus_to_source_sections,
     ingest_corpus,
+    load_all_corpora,
     load_corpus,
 )
 from clauseiq.infrastructure.ingestion.pdf_parser import ParsedBlock, ParsedDocument
@@ -167,3 +168,13 @@ async def test_ingest_corpus_chunks_embeds_and_stores() -> None:
     assert report.chunks >= 3
     assert len(store.added) == report.chunks
     assert all(c.metadata["law_code"] == "ICA_1872" for c in store.added)
+
+
+def test_load_all_corpora_loads_multiple_statutes() -> None:
+    corpora = load_all_corpora()
+    assert len(corpora) >= 3
+    codes = {c.law_code for c in corpora}
+    assert "ICA_1872" in codes
+    assert "SRA_1963" in codes
+    assert "CPA_2019" in codes
+

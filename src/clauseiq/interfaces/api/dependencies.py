@@ -10,8 +10,13 @@ load a model or call a real LLM.
 from __future__ import annotations
 
 import asyncio
+from typing import TYPE_CHECKING
 
 from fastapi import Request
+
+if TYPE_CHECKING:
+    from clauseiq.application.chat import ContractChatService
+    from clauseiq.application.diff import ContractDiffService
 
 from clauseiq.application.workflows import AnalysisDeps, ContractAnalyzer
 from clauseiq.config import settings
@@ -81,4 +86,28 @@ async def get_contract_chat_service(request: Request) -> ContractChatService:
     return service
 
 
-__all__ = ["get_contract_analyzer", "get_contract_chat_service", "get_law_repository"]
+async def get_contract_diff_service(request: Request) -> ContractDiffService:
+    """Return the shared contract diff service, building it once on first use."""
+    from clauseiq.application.diff import ContractDiffService
+
+    state = request.app.state
+    service: ContractDiffService | None = getattr(state, "diff_service", None)
+    if service is not None:
+        return service
+    async with _build_lock:
+        service = getattr(state, "diff_service", None)
+        if service is None:
+            llm = get_llm_client(LLMRole.ANALYSIS)
+            service = ContractDiffService(llm=llm)
+            state.diff_service = service
+            log.info("built_contract_diff_service")
+    return service
+
+
+__all__ = [
+    "get_contract_analyzer",
+    "get_contract_chat_service",
+    "get_contract_diff_service",
+    "get_law_repository",
+]
+

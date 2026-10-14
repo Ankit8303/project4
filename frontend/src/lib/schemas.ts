@@ -119,3 +119,30 @@ export const contractChatResponseSchema = z.object({
   citations: z.array(citationSchema).default([]),
 });
 export type ContractChatResponse = z.infer<typeof contractChatResponseSchema>;
+
+export const clauseDiffItemSchema = z.object({
+  change_type: z.string(),
+  clause_title: z.string(),
+  original_text: z.string().nullable().optional(),
+  revised_text: z.string().nullable().optional(),
+  is_sneaky_risk: z.boolean().default(false),
+  risk_explanation: z.string().nullable().optional(),
+  recommendation: z.string().nullable().optional(),
+});
+export type ClauseDiffItem = z.infer<typeof clauseDiffItemSchema>;
+
+export const contractDiffRequestSchema = z.object({
+  original_text: z.string().min(50),
+  revised_text: z.string().min(50),
+  jurisdiction: z.enum(jurisdictions).default("IN-MH"),
+});
+export type ContractDiffRequest = z.infer<typeof contractDiffRequestSchema>;
+
+export const contractDiffResponseSchema = z.object({
+  summary: z.string(),
+  risk_verdict: z.string(),
+  total_changes: z.number(),
+  sneaky_traps_count: z.number(),
+  changes: z.array(clauseDiffItemSchema).default([]),
+});
+export type ContractDiffResponse = z.infer<typeof contractDiffResponseSchema>;

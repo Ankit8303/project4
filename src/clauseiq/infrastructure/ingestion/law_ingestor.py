@@ -338,13 +338,46 @@ async def run_ingestion(*, corpus_path: Path | None = None) -> IngestReport:
     return await ingest_corpus(corpus, store=store, embedder=embedder, chunker=chunker)
 
 
+def load_all_corpora(directory: Path | None = None) -> list[LawCorpus]:
+    """Load all *.json statute corpora from a directory (defaults to data/laws)."""
+    dir_path = directory or settings.law_corpus_path.parent
+    corpora: list[LawCorpus] = []
+    for file in sorted(dir_path.glob("*.json")):
+        try:
+            corpora.append(load_corpus(file))
+        except Exception as exc:
+            log.warning("failed_loading_corpus_file", path=str(file), error=str(exc))
+    return corpora
+
+
+async def run_multi_corpus_ingestion(paths: list[Path] | None = None) -> IngestReport:
+    """Load and ingest multiple statute corpora into ChromaDB."""
+    dir_path = settings.law_corpus_path.parent
+    target_paths = paths if paths is not None else sorted(dir_path.glob("*.json"))
+    store = build_law_vector_store()
+    embedder = SentenceTransformerEmbedder()
+    chunker = build_default_chunker()
+    total_sections = 0
+    total_chunks = 0
+    for p in target_paths:
+        try:
+            corpus = load_corpus(p)
+            report = await ingest_corpus(corpus, store=store, embedder=embedder, chunker=chunker)
+            total_sections += report.sections
+            total_chunks += report.chunks
+            log.info("ingested_statute", statute=corpus.statute_title, sections=report.sections)
+        except Exception as exc:
+            log.error("corpus_ingestion_error", path=str(p), error=str(exc))
+    return IngestReport(sections=total_sections, chunks=total_chunks)
+
+
 def main() -> None:
     """Console entry point (``clauseiq-ingest-laws``)."""
     from clauseiq.logging_config import configure_logging
 
     configure_logging()
-    report = asyncio.run(run_ingestion())
-    log.info("ingestion_complete", sections=report.sections, chunks=report.chunks)
+    report = asyncio.run(run_multi_corpus_ingestion())
+    log.info("multi_corpus_ingestion_complete", sections=report.sections, chunks=report.chunks)
 
 
 __all__ = [
@@ -356,7 +389,10 @@ __all__ = [
     "corpus_to_source_sections",
     "fetch_corpus_from_source",
     "ingest_corpus",
+    "load_all_corpora",
     "load_corpus",
     "main",
     "run_ingestion",
+    "run_multi_corpus_ingestion",
 ]
+

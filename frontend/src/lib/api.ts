@@ -3,9 +3,12 @@ import {
   type ContractAnalysis,
   type ContractChatRequest,
   type ContractChatResponse,
+  type ContractDiffRequest,
+  type ContractDiffResponse,
   type LawSection,
   contractAnalysisSchema,
   contractChatResponseSchema,
+  contractDiffResponseSchema,
   lawSectionSchema,
 } from "@/lib/schemas";
 
@@ -102,4 +105,26 @@ export async function askContractQuestion(
     );
   }
   return contractChatResponseSchema.parse(body);
+}
+
+/** Compare two contract versions to identify additions, modifications, and sneaky traps. */
+export async function compareContracts(
+  request: ContractDiffRequest,
+  signal?: AbortSignal,
+): Promise<ContractDiffResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/compare`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+    signal,
+  });
+  const body = await readJson(response);
+  if (!response.ok) {
+    throw new ApiError(
+      extractReason(body) ?? `Diff comparison failed (HTTP ${response.status})`,
+      response.status,
+      body,
+    );
+  }
+  return contractDiffResponseSchema.parse(body);
 }

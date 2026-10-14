@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+
 import pytest
 
 from clauseiq.application.chat import ContractChatService, _extract_contract_excerpts

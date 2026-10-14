@@ -1,6 +1,7 @@
 import { AgentTrace } from "@/components/AgentTrace";
 import { ClauseCard } from "@/components/ClauseCard";
 import { ContractChat } from "@/components/ContractChat";
+import { ExportReportModal } from "@/components/ExportReportModal";
 import { RiskGauge } from "@/components/RiskGauge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useStreamingAgents } from "@/hooks/useStreamingAgents";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { AlertTriangle, MessageSquareText, ShieldAlert, Sparkles } from "lucide-react";
+import { AlertTriangle, GitCompare, MessageSquareText, ShieldAlert, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 
@@ -43,6 +44,7 @@ export default function Analysis() {
                 {usage.total_tokens?.toLocaleString()} tokens · ${usage.cost_usd.toFixed(4)}
               </p>
             ) : null}
+            {analysis ? <ExportReportModal analysis={analysis} /> : null}
           </CardContent>
         </Card>
         <Card>
@@ -58,47 +60,59 @@ export default function Analysis() {
       <section className="space-y-4">
         {/* Navigation Tabs */}
         {analysis && (
-          <div className="flex items-center gap-2 border-b pb-2">
-            <button
-              type="button"
-              onClick={() => setActiveTab("flags")}
-              className={cn(
-                "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
-                activeTab === "flags"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
-              )}
-            >
-              <ShieldAlert className="h-4 w-4" />
-              <span>Flagged Clauses</span>
-              <Badge
-                variant={activeTab === "flags" ? "secondary" : "outline"}
-                className="h-5 px-1.5 text-xs font-semibold"
+          <div className="flex items-center justify-between border-b pb-2">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveTab("flags")}
+                className={cn(
+                  "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  activeTab === "flags"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                )}
               >
-                {analysis.flag_count}
-              </Badge>
-            </button>
+                <ShieldAlert className="h-4 w-4" />
+                <span>Flagged Clauses</span>
+                <Badge
+                  variant={activeTab === "flags" ? "secondary" : "outline"}
+                  className="h-5 px-1.5 text-xs font-semibold"
+                >
+                  {analysis.flag_count}
+                </Badge>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setActiveTab("chat")}
-              className={cn(
-                "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
-                activeTab === "chat"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
-              )}
-            >
-              <MessageSquareText className="h-4 w-4" />
-              <span>Chat with Contract</span>
-              <Badge
-                variant={activeTab === "chat" ? "secondary" : "outline"}
-                className="h-5 px-1.5 text-[10px] font-normal gap-1"
+              <button
+                type="button"
+                onClick={() => setActiveTab("chat")}
+                className={cn(
+                  "inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  activeTab === "chat"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                )}
               >
-                <Sparkles className="h-2.5 w-2.5" />
-                AI Q&A
-              </Badge>
-            </button>
+                <MessageSquareText className="h-4 w-4" />
+                <span>Chat with Contract</span>
+                <Badge
+                  variant={activeTab === "chat" ? "secondary" : "outline"}
+                  className="h-5 px-1.5 text-[10px] font-normal gap-1"
+                >
+                  <Sparkles className="h-2.5 w-2.5" />
+                  AI Q&A
+                </Badge>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button asChild variant="outline" size="sm" className="gap-1.5 h-8 text-xs">
+                <Link to="/compare">
+                  <GitCompare className="h-3.5 w-3.5" />
+                  Compare Drafts
+                </Link>
+              </Button>
+              <ExportReportModal analysis={analysis} />
+            </div>
           </div>
         )}
 

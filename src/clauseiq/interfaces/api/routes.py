@@ -22,11 +22,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
 from clauseiq.application.chat import ContractChatService
+from clauseiq.application.diff import ContractDiffService
 from clauseiq.application.schemas import (
     ContractAnalysis,
     ContractAnalysisRequest,
     ContractChatRequest,
     ContractChatResponse,
+    ContractDiffRequest,
+    ContractDiffResponse,
     LawSectionOut,
 )
 from clauseiq.application.workflows import ContractAnalyzer
@@ -36,6 +39,7 @@ from clauseiq.domain.value_objects import LawCode
 from clauseiq.interfaces.api.dependencies import (
     get_contract_analyzer,
     get_contract_chat_service,
+    get_contract_diff_service,
     get_law_repository,
 )
 from clauseiq.logging_config import get_logger
@@ -47,6 +51,8 @@ router = APIRouter()
 AnalyzerDep = Annotated[ContractAnalyzer, Depends(get_contract_analyzer)]
 LawRepoDep = Annotated[LawRepository, Depends(get_law_repository)]
 ChatServiceDep = Annotated[ContractChatService, Depends(get_contract_chat_service)]
+DiffServiceDep = Annotated[ContractDiffService, Depends(get_contract_diff_service)]
+
 
 
 def _parse_section_id(section_id: str) -> tuple[LawCode, str]:
@@ -112,6 +118,26 @@ async def chat_with_contract(
         status = 503 if "api_key" in error.message else 502
         raise HTTPException(
             status_code=status, detail={"error": "chat_failed", "reason": error.message}
+        )
+    return result.unwrap()
+
+
+@router.post("/api/v1/compare", response_model=ContractDiffResponse, tags=["compare"])
+async def compare_contracts(
+    request: ContractDiffRequest, diff_service: DiffServiceDep
+) -> ContractDiffResponse:
+    """Compare an original contract (V1) against a counterparty revision (V2) to detect sneaky clauses."""
+    result = await diff_service.compare(request)
+    if result.is_err():
+        error = result.unwrap_err()
+        if isinstance(error, GuardrailError):
+            raise HTTPException(
+                status_code=422,
+                detail={"error": "rejected", "reason": error.message, **error.context},
+            )
+        status = 503 if "api_key" in error.message else 502
+        raise HTTPException(
+            status_code=status, detail={"error": "compare_failed", "reason": error.message}
         )
     return result.unwrap()
 

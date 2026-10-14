@@ -303,15 +303,54 @@ class ContractChatResponse(BaseModel):
     citations: list[CitationOut] = Field(default_factory=list)
 
 
+# --- Contract Diff (V1 vs V2) I/O --------------------------------------------
+
+
+class ContractDiffRequest(BaseModel):
+    """Request to compare original contract (V1) against counterparty revision (V2)."""
+
+    original_text: str = Field(min_length=50, description="Original contract text (Draft 1).")
+    revised_text: str = Field(min_length=50, description="Revised contract text (Draft 2).")
+    jurisdiction: Jurisdiction = Jurisdiction.IN_MH
+
+
+class ClauseDiffItem(BaseModel):
+    """A single change between contract versions and its risk assessment."""
+
+    change_type: str = Field(description="'added', 'removed', or 'modified'")
+    clause_title: str
+    original_text: str | None = None
+    revised_text: str | None = None
+    is_sneaky_risk: bool = Field(
+        default=False,
+        description="True if this change subtly increases the weaker party's liability.",
+    )
+    risk_explanation: str | None = None
+    recommendation: str | None = None
+
+
+class ContractDiffResponse(BaseModel):
+    """Overall comparison report between two contract versions."""
+
+    summary: str
+    risk_verdict: str = Field(description="'more_risky', 'safer', or 'neutral'")
+    total_changes: int
+    sneaky_traps_count: int
+    changes: list[ClauseDiffItem] = Field(default_factory=list)
+
+
 __all__ = [
     "AnalyzedFlag",
     "ChatMessage",
     "CitationOut",
+    "ClauseDiffItem",
     "ContractAnalysis",
     "ContractAnalysisRequest",
     "ContractChatRequest",
     "ContractChatResponse",
     "ContractChatStructuredResult",
+    "ContractDiffRequest",
+    "ContractDiffResponse",
     "LawSectionOut",
     "ProposedCitation",
     "RiskAnalysisResult",

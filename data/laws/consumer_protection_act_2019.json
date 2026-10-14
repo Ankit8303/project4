@@ -1,0 +1,52 @@
+{
+  "law_code": "CPA_2019",
+  "statute_title": "Consumer Protection Act, 2019",
+  "version": "CPA-2019-indiacode-2026-06-25",
+  "source_url": "https://www.indiacode.nic.in/bitstream/123456789/15256/1/a2019-35.pdf",
+  "source_fetched_at": "2026-06-25",
+  "effective_date": "2020-07-20",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "1",
+      "section_title": "Short title, extent, commencement and application",
+      "section_text": "1. Short title, extent, commencement and application.—(1) This Act may be called the Consumer Protection Act, 2019.\n(2) It extends to the whole of India.\n(3) It shall come into force on such date as the Central Government may, by notification, appoint.\n(4) Save as otherwise expressly provided by the Central Government, this Act shall apply to all goods and services.",
+      "effective_date": "2020-07-20",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "CPA-2019-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "2(46)",
+      "section_title": "Unfair contract definition",
+      "section_text": "2(46). 'unfair contract' means a contract between a manufacturer or trader or service provider on one hand, and a consumer on the other, having such terms which cause significant change in the rights of such consumer, including the following, namely:—\n(i) requiring manifestly excessive security deposits to be given by a consumer for the performance of contractual obligations;\n(ii) imposing any penalty on the consumer, for the breach of contract thereof which is wholly disproportionate to the loss occurred due to such breach to the other party to the contract;\n(iii) refusing to accept early repayment of debts on payment of applicable penalty;\n(iv) entitling a party to the contract to terminate such contract unilaterally, without reasonable cause;\n(v) permitting or has the effect of permitting one party to assign the contract to the detriment of the other party who is a consumer, without his consent; or\n(vi) imposing on the consumer any unreasonable charge, obligation or condition which puts such consumer to disadvantage.",
+      "effective_date": "2020-07-20",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "CPA-2019-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "2(47)",
+      "section_title": "Unfair trade practice definition",
+      "section_text": "2(47). 'unfair trade practice' means a trade practice which, for the purpose of promoting the sale, use or supply of any goods or for the provision of any service, adopts any unfair method or unfair or deceptive practice including making any statement, whether orally or in writing or by visible representation which falsely represents that the goods or services are of a particular standard, quality, quantity, grade, composition, style or model.",
+      "effective_date": "2020-07-20",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "CPA-2019-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "49",
+      "section_title": "Procedure applicable to State Commission to declare unfair contract void",
+      "section_text": "49. Procedure applicable to State Commission.—(2) Without prejudice to the provisions of sub-section (1), the State Commission may also declare any terms of contract, which is unfair to any consumer, to be null and void.",
+      "effective_date": "2020-07-20",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "CPA-2019-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    }
+  ]
+}

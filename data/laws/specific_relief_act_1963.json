@@ -1,0 +1,112 @@
+{
+  "law_code": "SRA_1963",
+  "statute_title": "Specific Relief Act, 1963",
+  "version": "SRA-1963-indiacode-2026-06-25",
+  "source_url": "https://www.indiacode.nic.in/bitstream/123456789/1583/1/A1963-47.pdf",
+  "source_fetched_at": "2026-06-25",
+  "effective_date": "1964-03-01",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "1",
+      "section_title": "Short title, extent and commencement",
+      "section_text": "1. Short title, extent and commencement.—(1) This Act may be called the Specific Relief Act, 1963.\n(2) It extends to the whole of India.\n(3) It shall come into force on such date as the Central Government may, by notification in the Official Gazette, appoint.",
+      "effective_date": "1964-03-01",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "10",
+      "section_title": "Specific performance in respect of contracts",
+      "section_text": "10. Specific performance in respect of contracts.—The specific performance of a contract shall be enforced by the court subject to the provisions contained in sub-section (2) of section 11, section 14 and section 16.",
+      "effective_date": "1964-03-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "14",
+      "section_title": "Contracts not specifically enforceable",
+      "section_text": "14. Contracts not specifically enforceable.—The following contracts cannot be specifically enforced, namely:—\n(a) where a party to the contract has obtained substituted performance of contract in accordance with the provisions of section 20;\n(b) a contract, the performance of which involves the performance of a continuous duty which the court cannot supervise;\n(c) a contract which is so dependent on the personal qualifications of the parties that the court cannot enforce specific performance of its material terms; and\n(d) a contract which is in its nature determinable.",
+      "effective_date": "1964-03-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "14A",
+      "section_title": "Power of court to engage experts",
+      "section_text": "14A. Power of court to engage experts.—(1) Without prejudice to the generality of the provisions contained in the Code of Civil Procedure, 1908 (5 of 1908), in any suit under this Act, where the court considers it necessary to get expert opinion to assist it on any specific issue involved in the suit, it may engage one or more experts and direct to report to it on such issue and may secure attendance of the expert for providing evidence, including production of documents on the issue.",
+      "effective_date": "2018-10-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "16",
+      "section_title": "Personal bars to relief",
+      "section_text": "16. Personal bars to relief.—Specific performance of a contract cannot be enforced in favour of a person—\n(a) who has obtained substituted performance of contract under section 20; or\n(b) who has become incapable of performing, or violates any essential term of, the contract that on his part remains to be performed, or acts in fraud of the contract, or wilfully acts at variance with, or in subversion of, the relation intended to be established by the contract; or\n(c) who fails to prove that he has performed or has always been ready and willing to perform the essential terms of the contract which are to be performed by him, other than terms the performance of which has been prevented or waived by the defendant.",
+      "effective_date": "1964-03-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "20",
+      "section_title": "Substituted performance of contract",
+      "section_text": "20. Substituted performance of contract.—(1) Without prejudice to the generality of the provisions contained in the Indian Contract Act, 1872 (9 of 1872), and, except as otherwise agreed upon by the parties to the contract, where the contract is broken due to non-performance of promise by any party, the party who suffers by such breach shall have the option of substituted performance through a third party or by his own agency, and, recover the expenses and other costs actually incurred, spent or suffered by him, from the party committing such breach.\n(2) No substituted performance shall be undertaken unless the party who suffers such breach has given a notice in writing of not less than thirty days to the party in breach calling upon him to perform the contract within such time as specified in the notice, and on his refusal or failure to do so, he may get the same performed by a third party or by his own agency.\n(3) Where the party suffering breach of contract has got the contract performed through a third party or by his own agency after giving notice under sub-section (2), he shall not be entitled to claim relief of specific performance against the party in breach.",
+      "effective_date": "1964-03-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "20A",
+      "section_title": "Special provisions for contract relating to infrastructure project",
+      "section_text": "20A. Special provisions for contract relating to infrastructure project.—(1) No injunction shall be granted by court in a suit under this Act involving a contract relating to an infrastructure project specified in the Schedule, where granting injunction would cause impediment or delay in the progress or completion of such infrastructure project.",
+      "effective_date": "2018-10-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    },
+    {
+      "section_number": "27",
+      "section_title": "Where rescission may be adjudged or refused",
+      "section_text": "27. Where rescission may be adjudged or refused.—(1) Any person interested in a contract may sue to have it rescinded, and such rescission may be adjudged by the court in any of the following cases, namely:—\n(a) where the contract is voidable or terminable by the plaintiff;\n(b) where the contract is unlawful for causes not apparent on its face and the defendant is more to blame than the plaintiff.",
+      "effective_date": "1964-03-01",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "31",
+      "section_title": "When cancellation may be ordered",
+      "section_text": "31. When cancellation may be ordered.—(1) Any person against whom a written instrument is void or voidable, and who has reasonable apprehension that such instrument, if left outstanding may cause him serious injury, may sue to have it adjudged void or voidable; and the court may, in its discretion, so adjudge it and order it to be delivered up and cancelled.",
+      "effective_date": "1964-03-01",
+      "last_amended": null,
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "41",
+      "section_title": "Injunction when refused",
+      "section_text": "41. Injunction when refused.—An injunction cannot be granted—\n(a) to restrain any person from prosecuting a judicial proceeding pending at the institution of the suit in which the injunction is sought, unless such restraint is necessary to prevent a multiplicity of proceedings;\n(e) to prevent the breach of a contract the performance of which would not be specifically enforced;\n(h) when equally efficacious relief can certainly be obtained by any other usual mode of proceeding except in case of breach of trust;\n(i) when the conduct of the plaintiff or his agents has been such as to disentitle him to the assistance of the court;\n(j) when the plaintiff has no personal interest in the matter.",
+      "effective_date": "1964-03-01",
+      "last_amended": "2018-10-01",
+      "source_fetched_at": "2026-06-25",
+      "version": "SRA-1963-indiacode-2026-06-25",
+      "is_amendment_history_known": true
+    }
+  ]
+}
