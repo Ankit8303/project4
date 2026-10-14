@@ -85,9 +85,10 @@ class RetrieverAgent:
         if applicable_statutes:
             await self._ensure_statutes_cached(applicable_statutes)
 
-        queries = list(state.get("retrieval_queries") or [])
-        if not queries:
-            queries = [clause.text for clause in state.get("clauses", [])]
+        raw_queries = list(state.get("retrieval_queries") or [])
+        if not raw_queries:
+            raw_queries = [clause.text for clause in state.get("clauses", [])]
+        queries = list(dict.fromkeys(q.strip() for q in raw_queries if q.strip()))[:4]
 
         best_by_id: dict[str, ScoredChunk] = {}
 

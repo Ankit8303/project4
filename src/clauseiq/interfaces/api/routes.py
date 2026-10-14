@@ -14,6 +14,7 @@ an extra dependency; each event is ``event: <name>\\ndata: <json>\\n\\n``.
 
 from __future__ import annotations
 
+import asyncio
 import json
 from collections.abc import AsyncIterator
 from typing import Annotated
@@ -84,21 +85,49 @@ async def analyze(request: ContractAnalysisRequest, analyzer: AnalyzerDep) -> Co
         )
     return result.unwrap()
 
-
 @router.post("/api/v1/analyze/stream", tags=["analysis"])
 async def analyze_stream(
     request: ContractAnalysisRequest, analyzer: AnalyzerDep
 ) -> StreamingResponse:
-    """Analyze a contract, streaming one SSE event as each agent completes."""
+    """Analyze a contract, streaming one SSE event as each agent completes with keep-alive heartbeats."""
 
     async def event_source() -> AsyncIterator[str]:
-        async for event in analyzer.stream(request):
-            yield f"event: {event.event}\ndata: {json.dumps(event.data)}\n\n"
+        queue: asyncio.Queue[str | None] = asyncio.Queue()
+
+        async def _run_stream() -> None:
+            try:
+                async for event in analyzer.stream(request):
+                    await queue.put(f"event: {event.event}\ndata: {json.dumps(event.data)}\n\n")
+            except Exception as exc:
+                log.error("stream_error", error=str(exc))
+                await queue.put(f"event: error\ndata: {json.dumps({'message': str(exc)})}\n\n")
+            finally:
+                await queue.put(None)
+
+        stream_task = asyncio.create_task(_run_stream())
+
+        try:
+            while True:
+                try:
+                    # Keep connection alive: send ': ping\n\n' comment every 3s if no event arrived
+                    chunk = await asyncio.wait_for(queue.get(), timeout=3.0)
+                    if chunk is None:
+                        break
+                    yield chunk
+                except asyncio.TimeoutError:
+                    yield ": ping\n\n"
+        finally:
+            if not stream_task.done():
+                stream_task.cancel()
 
     return StreamingResponse(
         event_source(),
         media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        headers={
+            "Cache-Control": "no-cache, no-transform",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
     )
 
 

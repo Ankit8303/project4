@@ -1,4 +1,4 @@
-import { ApiError } from "@/lib/api";
+import { ApiError, analyzeContract } from "@/lib/api";
 import { streamAnalysis } from "@/lib/sse";
 import { useAnalysisStore } from "@/stores/analysis";
 import { useEffect } from "react";
@@ -41,9 +41,21 @@ export function useStreamingAgents(sessionId: string) {
     streamAnalysis(request, {
       onEvent: handleEvent,
       signal: controller.signal,
-    }).catch((streamError: unknown) => {
-      if (!controller.signal.aborted) {
-        fail(errorMessage(streamError));
+    }).catch(async (streamError: unknown) => {
+      if (controller.signal.aborted) {
+        return;
+      }
+      // If the SSE connection dropped mid-flight, fall back to direct analysis POST
+      try {
+        const fullAnalysis = await analyzeContract(request, controller.signal);
+        handleEvent({
+          event: "done",
+          data: { analysis: fullAnalysis },
+        });
+      } catch {
+        if (!controller.signal.aborted) {
+          fail(errorMessage(streamError));
+        }
       }
     });
     return () => controller.abort();
