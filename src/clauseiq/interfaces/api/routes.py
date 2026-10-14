@@ -92,6 +92,9 @@ async def analyze_stream(
     """Analyze a contract, streaming one SSE event as each agent completes with keep-alive heartbeats."""
 
     async def event_source() -> AsyncIterator[str]:
+        # Flush initial comment immediately to open stream and deliver HTTP headers to client
+        yield ": ok\n\n"
+
         queue: asyncio.Queue[str | None] = asyncio.Queue()
 
         async def _run_stream() -> None:
@@ -109,8 +112,8 @@ async def analyze_stream(
         try:
             while True:
                 try:
-                    # Keep connection alive: send ': ping\n\n' comment every 3s if no event arrived
-                    chunk = await asyncio.wait_for(queue.get(), timeout=3.0)
+                    # Keep connection alive: send ': ping\n\n' comment every 2s if no event arrived
+                    chunk = await asyncio.wait_for(queue.get(), timeout=2.0)
                     if chunk is None:
                         break
                     yield chunk

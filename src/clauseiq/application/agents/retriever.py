@@ -83,7 +83,10 @@ class RetrieverAgent:
     async def __call__(self, state: AnalysisState) -> dict[str, object]:
         applicable_statutes = state.get("applicable_statutes") or []
         if applicable_statutes:
-            await self._ensure_statutes_cached(applicable_statutes)
+            try:
+                await self._ensure_statutes_cached(applicable_statutes)
+            except Exception as exc:
+                log.warning("ensure_statutes_cached_failed", error=str(exc))
 
         raw_queries = list(state.get("retrieval_queries") or [])
         if not raw_queries:
@@ -96,26 +99,32 @@ class RetrieverAgent:
         from clauseiq.infrastructure.ingestion.web_law_fetcher import STATUTE_ALIASES
 
         if hasattr(self._law_repo, "_store"):
-            for statute in applicable_statutes:
-                clean_code = statute.strip().upper()
-                norm_code = STATUTE_ALIASES.get(clean_code, clean_code)
-                statute_chunks = await self._law_repo._store.get_all(where={"law_code": norm_code})
-                if not statute_chunks and clean_code != norm_code:
-                    statute_chunks = await self._law_repo._store.get_all(where={"law_code": clean_code})
-                for chunk in statute_chunks:
-                    best_by_id[chunk.id] = ScoredChunk(chunk=chunk, score=0.95)
+            try:
+                for statute in applicable_statutes:
+                    clean_code = statute.strip().upper()
+                    norm_code = STATUTE_ALIASES.get(clean_code, clean_code)
+                    statute_chunks = await self._law_repo._store.get_all(where={"law_code": norm_code})
+                    if not statute_chunks and clean_code != norm_code:
+                        statute_chunks = await self._law_repo._store.get_all(where={"law_code": clean_code})
+                    for chunk in statute_chunks:
+                        best_by_id[chunk.id] = ScoredChunk(chunk=chunk, score=0.95)
+            except Exception as exc:
+                log.warning("retriever_statute_store_lookup_failed", error=str(exc))
 
         for query in queries:
             if not query.strip():
                 continue
-            result = await self._law_repo.search(query, self._per_query_k)
-            if result.is_err():
-                log.warning("retriever_query_failed", code=result.unwrap_err().message)
-                continue
-            for scored in result.unwrap():
-                existing = best_by_id.get(scored.chunk.id)
-                if existing is None or scored.score > existing.score:
-                    best_by_id[scored.chunk.id] = scored
+            try:
+                result = await self._law_repo.search(query, self._per_query_k)
+                if result.is_err():
+                    log.warning("retriever_query_failed", code=result.unwrap_err().message)
+                    continue
+                for scored in result.unwrap():
+                    existing = best_by_id.get(scored.chunk.id)
+                    if existing is None or scored.score > existing.score:
+                        best_by_id[scored.chunk.id] = scored
+            except Exception as exc:
+                log.warning("retriever_search_exception", query=query, error=str(exc))
 
         # Ensure balanced pool with both applicable statute provisions and general contract law
         pool = sorted(best_by_id.values(), key=lambda s: s.score, reverse=True)[: max(self._pool_size, len(best_by_id))]

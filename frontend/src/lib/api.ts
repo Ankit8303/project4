@@ -53,12 +53,45 @@ export async function analyzeContract(
   request: AnalysisRequest,
   signal?: AbortSignal,
 ): Promise<ContractAnalysis> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/analyze`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-    signal,
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+      signal,
+    });
+    if (!response.ok && API_BASE_URL && API_BASE_URL.startsWith("http")) {
+      try {
+        const fbResponse = await fetch("/api/v1/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(request),
+          signal,
+        });
+        if (fbResponse.ok) {
+          response = fbResponse;
+        }
+      } catch {
+        // keep original response
+      }
+    }
+  } catch (error) {
+    if (signal?.aborted) {
+      throw error;
+    }
+    if (API_BASE_URL && API_BASE_URL.startsWith("http")) {
+      response = await fetch("/api/v1/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request),
+        signal,
+      });
+    } else {
+      throw error;
+    }
+  }
+
   const body = await readJson(response);
   if (!response.ok) {
     throw new ApiError(

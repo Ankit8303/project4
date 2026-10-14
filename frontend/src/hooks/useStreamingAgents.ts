@@ -52,9 +52,9 @@ export function useStreamingAgents(sessionId: string) {
           event: "done",
           data: { analysis: fullAnalysis },
         });
-      } catch {
+      } catch (fallbackError: unknown) {
         if (!controller.signal.aborted) {
-          fail(errorMessage(streamError));
+          fail(errorMessage(fallbackError || streamError));
         }
       }
     });
