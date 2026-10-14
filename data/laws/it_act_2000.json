@@ -1,0 +1,52 @@
+{
+  "law_code": "IT_ACT_2000",
+  "statute_title": "Information Technology Act, 2000",
+  "version": "IT_ACT_2000-web-2026-10-14",
+  "source_url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG1WOfHPvo-81N5ZKwhXpww_bxe9R3CJVmwrpHhSh13OZWSKYBUmy_PIGkd5UGtBtws6K2TiRKTGXH5_ukW1RWY1U6yxHuTX4_RaLWZBwHytXi-YFIkdZv2oKSy08I7C5j2jaSmh5jH",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "43",
+      "section_title": "Penalty and compensation for damage to computer, computer system,",
+      "section_text": "43. Penalty and compensation for damage to computer, computer system, - etc. - This section imposes civil liability and penalties on any person who, without the permission of the owner or any other person in charge of a computer, computer system, or computer network, accesses, downloads, extracts, introduces viruses, causes damage, disrupts services, or steals data. The liable party must pay compensation to the affected person.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "43A",
+      "section_title": "Compensation for failure to protect",
+      "section_text": "43A. Compensation for failure to protect - data. - This section mandates that a body corporate possessing, dealing with, or handling sensitive personal data or information in a computer resource, shall be liable to pay compensation to the person affected if it is negligent in implementing and maintaining reasonable security practices and procedures, thereby causing wrongful loss or gain to any person.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "66",
+      "section_title": "Computer related",
+      "section_text": "66. Computer related - offences. - This section outlines criminal liabilities for various computer-related offenses. It states that any person who commits any act referred to in Section 43 with dishonest or fraudulent intent shall be punishable with imprisonment and/or a fine. This includes hacking, identity theft, and cyber fraud.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "79",
+      "section_title": "Exemption from liability of intermediary in certain",
+      "section_text": "79. Exemption from liability of intermediary in certain - cases. - This section provides a \"safe harbor\" to intermediaries, stating that they shall not be liable for any third-party information, data, or communication link made available or hosted by them, provided their function is limited to providing access to a communication system, they do not initiate or select the transmission or modify the information, and they observe due diligence. However, this exemption does not apply if the intermediary has conspired, abetted, aided, or induced the unlawful act, or fails to expeditiously remove or disable access to unlawful material upon receiving actual knowledge or notification from the appropriate government agency.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}

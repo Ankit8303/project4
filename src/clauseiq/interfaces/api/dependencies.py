@@ -55,11 +55,14 @@ async def get_contract_analyzer(request: Request) -> ContractAnalyzer:
     async with _build_lock:
         analyzer = getattr(state, "analyzer", None)
         if analyzer is None:
+            from clauseiq.infrastructure.ingestion.web_law_fetcher import OfficialPortalLawFetcher
+
             deps = AnalysisDeps(
                 supervisor_llm=get_llm_client(LLMRole.ORCHESTRATION),
                 analyzer_llm=get_llm_client(LLMRole.ANALYSIS),
                 law_repo=repo,
                 corpus_version=settings.corpus_version,
+                web_fetcher=OfficialPortalLawFetcher(),
             )
             analyzer = ContractAnalyzer(deps)
             state.analyzer = analyzer

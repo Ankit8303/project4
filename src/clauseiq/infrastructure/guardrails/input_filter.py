@@ -56,6 +56,29 @@ _CONTRACT_SIGNALS = frozenset(
         "supplier",
         "services",
         "payment",
+        "damages",
+        "penalty",
+        "compete",
+        "notice",
+        "assignment",
+        "intellectual",
+        "property",
+        "client",
+        "consultant",
+        "contractor",
+        "compensation",
+        "fee",
+        "fees",
+        "license",
+        "licensee",
+        "licensor",
+        "dispute",
+        "disputes",
+        "waive",
+        "waiver",
+        "statute",
+        "law",
+        "court",
     }
 )
 
@@ -87,12 +110,11 @@ _NON_CONTRACT_SIGNALS = frozenset(
 
 _WORD_RE = re.compile(r"[a-z]+")
 
-# Tuning: a contract should have several distinct signal terms and a non-trivial
-# signal density; junk has near-zero. These are deliberately lenient (avoid false
-# rejects) — the LLM layer catches subtler non-contracts.
-_MIN_WORDS = 30
-_MIN_DISTINCT_SIGNALS = 3
-_MIN_SIGNAL_DENSITY = 0.015
+# Tuning: a contract/clause should have contract signal terms and non-zero
+# signal density; non-contracts (recipes, random chat) have zero or negative signals.
+_MIN_WORDS = 10
+_MIN_DISTINCT_SIGNALS = 1
+_MIN_SIGNAL_DENSITY = 0.01
 
 
 @dataclass(frozen=True, slots=True)

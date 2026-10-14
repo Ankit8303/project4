@@ -67,7 +67,9 @@ export function ContractUploader() {
 
   return (
     <form
-      onSubmit={handleSubmit((values) => analyze.mutate(values))}
+      onSubmit={handleSubmit((values) =>
+        analyze.mutate({ ...values, contract_text: values.contract_text.trim() })
+      )}
       className="space-y-4"
       aria-label="Contract analysis form"
     >
@@ -113,7 +115,9 @@ export function ContractUploader() {
         />
         <div className="flex items-center justify-between text-xs">
           <span className="text-destructive">{errors.contract_text?.message ?? ""}</span>
-          <span className="text-muted-foreground tabular-nums">{contractText.length} chars</span>
+          <span className="text-muted-foreground tabular-nums">
+            {contractText.trim().length} chars {contractText.trim().length < 30 ? "(min 30)" : ""}
+          </span>
         </div>
       </div>
 

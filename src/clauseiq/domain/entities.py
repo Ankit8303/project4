@@ -22,7 +22,13 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from clauseiq.domain.exceptions import ValidationError
-from clauseiq.domain.value_objects import ClauseType, Jurisdiction, LawCode, Severity
+from clauseiq.domain.value_objects import (
+    ClauseType,
+    Jurisdiction,
+    LawCode,
+    Severity,
+    get_statute_title,
+)
 
 
 def _require(condition: bool, message: str, **context: object) -> None:
@@ -104,7 +110,7 @@ class Citation:
     deliberate guardrail for time-sensitive legal matters.
     """
 
-    law_code: LawCode
+    law_code: LawCode | str
     section_number: str
     section_title: str
     snippet: str
@@ -122,7 +128,8 @@ class Citation:
     @property
     def reference(self) -> str:
         """Human-facing citation label, e.g. ``"Section 23, Indian Contract Act, 1872"``."""
-        return f"Section {self.section_number}, {self.law_code.full_title}"
+        title = self.law_code.full_title if hasattr(self.law_code, "full_title") else get_statute_title(self.law_code)
+        return f"Section {self.section_number}, {title}"
 
     @property
     def amendment_note(self) -> str | None:

@@ -18,7 +18,7 @@ _INJECTION_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
         r"ignore (?:all |the )?(?:previous|above|prior|earlier) (?:instructions?|prompts?|context)",
         r"disregard (?:all |the |any )?(?:previous|above|prior|earlier|system)",
         r"forget (?:everything|all (?:previous|prior)|your (?:instructions|training))",
-        r"you are (?:now|henceforth) (?:a|an|the|going)",
+        r"you are (?:now|henceforth) (?:a|an|the|going to) (?:assistant|helpful|bot|ai|language model|jailbreak|act as|pretend)",
         r"(?:new|updated|revised) (?:instructions?|system prompt|directives?)\s*[:\-]",
         r"system prompt",
         r"reveal (?:your |the )?(?:system )?(?:prompt|instructions)",

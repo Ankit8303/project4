@@ -275,7 +275,12 @@ def load_corpus(path: Path) -> LawCorpus:
     except json.JSONDecodeError as exc:
         raise IngestionError("corpus_parse_failed", cause=exc, path=str(path)) from exc
     try:
-        return LawCorpus.model_validate(data)
+        corpus = LawCorpus.model_validate(data)
+        from clauseiq.domain.value_objects import register_statute_title
+
+        if corpus.law_code and corpus.statute_title:
+            register_statute_title(corpus.law_code, corpus.statute_title)
+        return corpus
     except PydanticValidationError as exc:
         raise IngestionError("corpus_invalid", cause=exc, path=str(path)) from exc
 
@@ -286,6 +291,7 @@ def corpus_to_source_sections(corpus: LawCorpus) -> list[SourceSection]:
     for section in corpus.sections:
         metadata: dict[str, str] = {
             "law_code": corpus.law_code,
+            "statute_title": corpus.statute_title,
             "section_number": section.section_number,
             "section_title": section.section_title,
             "section_text": section.section_text,

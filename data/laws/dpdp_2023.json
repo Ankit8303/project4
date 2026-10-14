@@ -1,0 +1,52 @@
+{
+  "law_code": "DPDP_2023",
+  "statute_title": "Digital Personal Data Protection Act, 2023",
+  "version": "DPDP_2023-web-2026-10-14",
+  "source_url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFr8ndQjGvqN4CZVtjrTItMf-KqKRfsk8li_yyHrImMsHvCpK3YdHxbuv3J0qDgUoK-07C5BCVpTw6dray8FnnU96qIQcQXLQ8lc3I4ZHxVolcwhxTw3QCcUQVQ607VuayB_mHeQcnV",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "3",
+      "section_title": "Application of Act - This section defines the territorial and material scope of the Act, specifying that it applies to the processing of digital personal data within India, and also to processing outside India if it relates to offering goods or services to Data Principals in",
+      "section_text": "3. Application of Act - This section defines the territorial and material scope of the Act, specifying that it applies to the processing of digital personal data within India, and also to processing outside India if it relates to offering goods or services to Data Principals in - India. It also outlines exceptions, such as personal data processed for personal or domestic purposes, or data made publicly available by the Data Principal or by law.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "6",
+      "section_title": "Consent - This section mandates that consent given by a Data Principal for the processing of their personal data must be free, specific, informed, unconditional, and unambiguous, indicated by a clear affirmative",
+      "section_text": "6. Consent - This section mandates that consent given by a Data Principal for the processing of their personal data must be free, specific, informed, unconditional, and unambiguous, indicated by a clear affirmative - action. It must also be limited to the personal data necessary for the specified purpose. The Data Principal has the right to withdraw consent at any time.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "8",
+      "section_title": "General obligations of Data Fiduciary - This section outlines several key obligations for Data Fiduciaries, including making reasonable efforts to ensure the accuracy and completeness of personal data, implementing reasonable security safeguards to prevent personal data breaches, and notifying the Data Protection Board of India and affected Data Principals in the event of a personal data",
+      "section_text": "8. General obligations of Data Fiduciary - This section outlines several key obligations for Data Fiduciaries, including making reasonable efforts to ensure the accuracy and completeness of personal data, implementing reasonable security safeguards to prevent personal data breaches, and notifying the Data Protection Board of India and affected Data Principals in the event of a personal data - breach.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "33",
+      "section_title": "Power to impose penalty - This section grants the Data Protection Board of India the authority to impose monetary penalties for breaches of the Act's",
+      "section_text": "33. Power to impose penalty - This section grants the Data Protection Board of India the authority to impose monetary penalties for breaches of the Act's - provisions. The specific penalties for various breaches are detailed in the Schedule to the Act, with fines ranging up to ₹250 crore for serious violations such as failure to take reasonable security safeguards to prevent a personal data breach.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}

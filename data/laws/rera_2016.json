@@ -1,0 +1,52 @@
+{
+  "law_code": "RERA_2016",
+  "statute_title": "Real Estate (Regulation and Development) Act, 2016",
+  "version": "RERA_2016-web-2026-10-14",
+  "source_url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGmXMOyL0f-GOLLI31T40JqFayknVQT-SescAGoZ9NmHTOkCkAtZf9erqzS7l0u4aTII5BZ14ZOFmCIdjh4vdOwsJk1fYKGCTRnAGtVoI33mD7xSEUrwbguuBdsxWAbxue9rB9uS7saQKPLlFNSlnHLEM5QqVhVy5DxXPvmS9s5S0MKWmAWn6xh9Hkz",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "3",
+      "section_title": "Prior registration of real estate project with Real Estate Regulatory Authority - This section mandates that no promoter shall advertise, market, book, sell, or offer for sale any plot, apartment, or building in a real estate project without prior registration with the Real Estate Regulatory",
+      "section_text": "3. Prior registration of real estate project with Real Estate Regulatory Authority - This section mandates that no promoter shall advertise, market, book, sell, or offer for sale any plot, apartment, or building in a real estate project without prior registration with the Real Estate Regulatory - Authority. It also requires ongoing projects for which a completion certificate has not been issued to register with the Authority within three months of the Act's commencement.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "4",
+      "section_title": "Application for registration of real estate projects - This section outlines the detailed application process for project registration, requiring promoters to provide comprehensive information and documents, including legal title to the land, approvals, and a",
+      "section_text": "4. Application for registration of real estate projects - This section outlines the detailed application process for project registration, requiring promoters to provide comprehensive information and documents, including legal title to the land, approvals, and a - declaration. Crucially, it mandates that 70% of the amounts realized from allottees for the project must be deposited in a separate bank account, to be used solely for the construction and land costs of that specific project.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "14",
+      "section_title": "Adherence to sanctioned plans and project specifications by the promoter - This section stipulates that promoters must develop and complete the real estate project in accordance with the sanctioned plans, layout plans, and specifications approved by the competent",
+      "section_text": "14. Adherence to sanctioned plans and project specifications by the promoter - This section stipulates that promoters must develop and complete the real estate project in accordance with the sanctioned plans, layout plans, and specifications approved by the competent - authorities. It prohibits promoters from making any additions or alterations to these plans without the prior written consent of the allottees. Furthermore, it establishes the promoter's liability to rectify any structural defects or defects in workmanship, quality, or provision of services reported by the allottee within five years from the date of handing over possession, without any additional charge.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "59",
+      "section_title": "Punishment for non-registration of real estate project - This section addresses the liability for non-compliance with registration",
+      "section_text": "59. Punishment for non-registration of real estate project - This section addresses the liability for non-compliance with registration - requirements. It states that if any promoter fails to register a real estate project as mandated under Section 3, they shall be liable to a penalty which may extend up to ten percent of the estimated cost of the real estate project.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}

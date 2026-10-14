@@ -1,0 +1,52 @@
+{
+  "law_code": "ID_ACT_1947",
+  "statute_title": "Id Act 1947",
+  "version": "ID_ACT_1947-web-2026-10-14",
+  "source_url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHdifkN-bHad_BjNwblazqCJTtYNbbVzIabfGC4ZpSBgGxxh-p0tX2HQWsOdGRN-oUBChm3Ln6ha0RPpZcgIyt1FNoMSQSdVwDaTM7BwdRRxao9Uz-_9curHSDf8eSAeskWgniwMN-AUTgARHMPh56B5ifT78ICi3V2S1iVQOqi9U9uD4pvIgWS4p0W6Z4=",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "2",
+      "section_title": "Definitions** - This section lays the foundational statutory provisions by defining key terms used throughout the Act, such as \"appropriate Government,\" \"award,\" \"employer,\" \"industry,\" \"industrial dispute,\" \"lay-off,\" \"lock-out,\" \"settlement,\" \"strike,\" \"Tribunal,\" \"unfair labour practice,\" and",
+      "section_text": "2. Definitions** - This section lays the foundational statutory provisions by defining key terms used throughout the Act, such as \"appropriate Government,\" \"award,\" \"employer,\" \"industry,\" \"industrial dispute,\" \"lay-off,\" \"lock-out,\" \"settlement,\" \"strike,\" \"Tribunal,\" \"unfair labour practice,\" and - \"workman.\" Understanding these definitions is crucial for the correct interpretation and application of all other provisions of the Act, thereby ensuring compliance.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "29",
+      "section_title": "Penalty for breach of settlement or award** - This section addresses liabilities by stipulating that any person who commits a breach of any term of a settlement or award binding on them under this Act shall be punishable with imprisonment for a term which may extend to six months, or with fine, or with",
+      "section_text": "29. Penalty for breach of settlement or award** - This section addresses liabilities by stipulating that any person who commits a breach of any term of a settlement or award binding on them under this Act shall be punishable with imprisonment for a term which may extend to six months, or with fine, or with - both. If the breach is a continuing one, a further fine of up to two hundred rupees for every day the breach continues after the first conviction may be imposed. The court may also direct that the fine collected be paid as compensation to any person injured by such breach.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "31",
+      "section_title": "Penalty for other offences** - This section outlines general liabilities for contraventions of the",
+      "section_text": "31. Penalty for other offences** - This section outlines general liabilities for contraventions of the - Act. Any employer who contravenes the provisions of Section 33 (regarding conditions of service during pendency of proceedings) is punishable with imprisonment for a term which may extend to six months, or with a fine which may extend to one thousand rupees, or with both. Furthermore, whoever contravenes any other provision of this Act or any rule made thereunder, for which no other penalty is specifically provided, shall be punishable with a fine which may extend to one hundred rupees.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "33",
+      "section_title": "Conditions of service,",
+      "section_text": "33. Conditions of service, - etc., to remain unchanged under certain circumstances during pendency of proceedings** - This section imposes a significant statutory provision and compliance requirement on employers. During the pendency of any conciliation proceeding or any proceeding before an arbitrator, Labour Court, Tribunal, or National Tribunal in respect of an industrial dispute, no employer shall, without the express written permission of the authority concerned: (a) alter, to the prejudice of the workmen involved in the dispute, the conditions of service applicable to them immediately before the commencement of such proceeding; or (b) discharge or punish, whether by dismissal or otherwise, any workmen for any misconduct connected with the dispute. This section aims to prevent victimization of workmen and maintain industrial peace during dispute resolution.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}

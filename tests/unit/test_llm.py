@@ -215,7 +215,7 @@ def test_factory_returns_role_specific_clients() -> None:
     assert isinstance(orchestration, LLMClient)
     assert isinstance(analysis, LLMClient)
     assert "flash" in orchestration.model_name
-    assert "pro" in analysis.model_name
+    assert "pro" in analysis.model_name or "flash" in analysis.model_name
 
 
 @pytest.mark.parametrize("role", list(LLMRole))

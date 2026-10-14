@@ -134,6 +134,11 @@ class LawCode(str, Enum):
     ICA_1872 = "ICA_1872"  # Indian Contract Act, 1872
     SRA_1963 = "SRA_1963"  # Specific Relief Act, 1963
     CPA_2019 = "CPA_2019"  # Consumer Protection Act, 2019
+    IT_ACT_2000 = "IT_ACT_2000"  # Information Technology Act, 2000
+    DPDP_2023 = "DPDP_2023"  # Digital Personal Data Protection Act, 2023
+    IDA_1947 = "IDA_1947"  # Industrial Disputes Act, 1947
+    TPA_1882 = "TPA_1882"  # Transfer of Property Act, 1882
+    RERA_2016 = "RERA_2016"  # Real Estate (Regulation and Development) Act, 2016
 
     # State rent-control acts
     MH_RENT_1999 = "MH_RENT_1999"  # Maharashtra Rent Control Act, 1999
@@ -144,19 +149,21 @@ class LawCode(str, Enum):
 
     @property
     def full_title(self) -> str:
-        """Canonical long-form title of the statute.
-
-        Named ``full_title`` (not ``title``) deliberately: ``LawCode`` subclasses
-        ``str``, and ``str.title()`` already exists — overriding it would change
-        the meaning of an inherited method.
-        """
-        return _LAW_TITLES[self]
+        """Canonical long-form title of the statute."""
+        return get_statute_title(self)
 
 
-_LAW_TITLES: dict[LawCode, str] = {
+_DYNAMIC_LAW_TITLES: dict[str, str] = {}
+
+_LAW_TITLES: dict[LawCode | str, str] = {
     LawCode.ICA_1872: "Indian Contract Act, 1872",
     LawCode.SRA_1963: "Specific Relief Act, 1963",
     LawCode.CPA_2019: "Consumer Protection Act, 2019",
+    LawCode.IT_ACT_2000: "Information Technology Act, 2000",
+    LawCode.DPDP_2023: "Digital Personal Data Protection Act, 2023",
+    LawCode.IDA_1947: "Industrial Disputes Act, 1947",
+    LawCode.TPA_1882: "Transfer of Property Act, 1882",
+    LawCode.RERA_2016: "Real Estate (Regulation and Development) Act, 2016",
     LawCode.MH_RENT_1999: "Maharashtra Rent Control Act, 1999",
     LawCode.DL_RENT_1958: "Delhi Rent Control Act, 1958",
     LawCode.KA_RENT_2001: "Karnataka Rent Act, 2001",
@@ -164,4 +171,46 @@ _LAW_TITLES: dict[LawCode, str] = {
 }
 
 
-__all__ = ["ClauseType", "Jurisdiction", "LawCode", "Severity"]
+def register_statute_title(code: str, title: str) -> None:
+    """Dynamically register or override a canonical statute title."""
+    clean_code = code.strip().upper()
+    if clean_code:
+        _DYNAMIC_LAW_TITLES[clean_code] = title.strip()
+
+
+def get_statute_title(code: str | LawCode) -> str:
+    """Retrieve the human-readable canonical title for any statute code."""
+    key = code.value.upper() if isinstance(code, LawCode) else str(code).strip().upper()
+    if key in _DYNAMIC_LAW_TITLES:
+        return _DYNAMIC_LAW_TITLES[key]
+    for enum_member, title in _LAW_TITLES.items():
+        val = enum_member.value.upper() if isinstance(enum_member, LawCode) else str(enum_member).upper()
+        if val == key:
+            return title
+    # Fallback to humanizing the code itself (e.g. "MY_ACT_2024" -> "My Act 2024")
+    return str(code).replace("_", " ").title()
+
+
+class ContractCategory(str, Enum):
+    """High-level contract category detected by the supervisor."""
+
+    EMPLOYMENT = "employment"
+    RESIDENTIAL_LEASE = "residential_lease"
+    COMMERCIAL_LEASE = "commercial_lease"
+    SERVICES = "services_freelance"
+    NDA = "nda_confidentiality"
+    SOFTWARE_SAAS = "software_saas"
+    CONSUMER = "consumer_b2c"
+    PROCUREMENT = "vendor_procurement"
+    GENERAL = "general"
+
+
+__all__ = [
+    "ClauseType",
+    "ContractCategory",
+    "Jurisdiction",
+    "LawCode",
+    "Severity",
+    "get_statute_title",
+    "register_statute_title",
+]

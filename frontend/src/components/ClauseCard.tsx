@@ -11,6 +11,7 @@ import {
   Check,
   ChevronDown,
   Copy,
+  Database,
   Lightbulb,
   Mail,
   Scale,
@@ -95,6 +96,16 @@ export function ClauseCard({ flag }: ClauseCardProps) {
                   Redline Ready
                 </Badge>
               ) : null}
+              {flag.citations.map((c) => (
+                <Badge
+                  key={`${c.law_code}:${c.section_number}`}
+                  variant="outline"
+                  className="gap-1 border-primary/25 bg-primary/10 text-primary dark:text-primary-foreground font-mono text-[11px] font-normal"
+                >
+                  <Database className="h-3 w-3 text-primary shrink-0" />
+                  {c.reference}
+                </Badge>
+              ))}
               {flag.citations.length === 0 ? (
                 <Badge variant="muted" className="gap-1">
                   <BookX className="h-3 w-3" />
@@ -236,9 +247,15 @@ export function ClauseCard({ flag }: ClauseCardProps) {
 
               {/* Statutory backing */}
               <div>
-                <p className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                  Backed by
-                </p>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+                    Backed by
+                  </p>
+                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground/80">
+                    <Database className="h-3 w-3 text-primary" />
+                    ChromaDB · indian_law
+                  </span>
+                </div>
                 {flag.citations.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
                     {flag.citations.map((citation) => (

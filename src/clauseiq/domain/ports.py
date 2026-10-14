@@ -97,7 +97,7 @@ class LawRepository(Protocol):
 
     async def get_section(
         self,
-        law_code: LawCode,
+        law_code: LawCode | str,
         section_number: str,
     ) -> Result[Citation, RepositoryError]:
         """Fetch a single statutory section as a :class:`Citation`."""
@@ -105,6 +105,10 @@ class LawRepository(Protocol):
 
     async def count(self) -> int:
         """Return the number of statutory sections in the corpus."""
+        ...
+
+    async def has_statute(self, law_code: LawCode | str) -> bool:
+        """Check whether statutory sections for this code exist in the repository."""
         ...
 
 

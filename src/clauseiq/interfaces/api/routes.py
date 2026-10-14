@@ -55,15 +55,15 @@ DiffServiceDep = Annotated[ContractDiffService, Depends(get_contract_diff_servic
 
 
 
-def _parse_section_id(section_id: str) -> tuple[LawCode, str]:
+def _parse_section_id(section_id: str) -> tuple[LawCode | str, str]:
     """Parse ``"<LAW_CODE>:<number>"`` (or a bare number) into a code + section."""
     if ":" in section_id:
         code_part, _, number = section_id.partition(":")
+        clean_code = code_part.strip()
         try:
-            law_code = LawCode(code_part.strip())
+            return LawCode(clean_code), number.strip()
         except ValueError:
-            law_code = LawCode.OTHER
-        return law_code, number.strip()
+            return clean_code, number.strip()
     return LawCode.ICA_1872, section_id.strip()
 
 
@@ -153,6 +153,30 @@ async def get_law_section(section_id: str, law_repo: LawRepoDep) -> LawSectionOu
         )
     citation = result.unwrap()
     return LawSectionOut.from_citation(citation, amendment_note=citation.amendment_note)
+
+
+@router.get("/api/v1/laws", tags=["law"])
+async def list_laws(law_repo: LawRepoDep) -> dict[str, object]:
+    """List all loaded statutes in the law repository."""
+    if hasattr(law_repo, "list_statutes"):
+        statutes = await law_repo.list_statutes()  # type: ignore[union-attr]
+        total_sections = await law_repo.count()
+        return {"statutes": statutes, "total_sections": total_sections}
+    total_sections = await law_repo.count()
+    return {"statutes": [], "total_sections": total_sections}
+
+
+@router.post("/api/v1/laws/ingest", tags=["law"])
+async def ingest_laws() -> dict[str, object]:
+    """Ingest or refresh all statute JSON corpora from data/laws into the vector store."""
+    from clauseiq.infrastructure.ingestion.law_ingestor import run_multi_corpus_ingestion
+
+    report = await run_multi_corpus_ingestion()
+    return {
+        "status": "ingested",
+        "sections": report.sections,
+        "chunks": report.chunks,
+    }
 
 
 @router.get("/healthz", tags=["health"])

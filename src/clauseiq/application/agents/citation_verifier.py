@@ -24,11 +24,12 @@ from clauseiq.logging_config import get_logger
 log = get_logger(__name__)
 
 
-def _coerce_law_code(value: str) -> LawCode:
+def _coerce_law_code(value: str) -> LawCode | str:
+    cleaned = value.strip()
     try:
-        return LawCode(value.strip())
+        return LawCode(cleaned)
     except ValueError:
-        return LawCode.OTHER
+        return cleaned
 
 
 class CitationVerifierAgent:

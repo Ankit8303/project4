@@ -43,6 +43,9 @@ export type RiskFlag = z.infer<typeof riskFlagSchema>;
 export const contractAnalysisSchema = z.object({
   contract_id: z.string(),
   jurisdiction: z.string(),
+  contract_type: z.string().default("general"),
+  protecting_party: z.string().nullable().optional(),
+  applicable_statutes: z.array(z.string()).default([]),
   flag_count: z.number().int(),
   highest_severity: z.string().nullable().optional(),
   flags: z.array(riskFlagSchema).default([]),
@@ -69,7 +72,7 @@ export const jurisdictions = ["IN-MH", "IN-DL", "IN-KA"] as const;
 export type Jurisdiction = (typeof jurisdictions)[number];
 
 export const analysisRequestSchema = z.object({
-  contract_text: z.string().min(100, "Contract text must be at least 100 characters."),
+  contract_text: z.string().min(30, "Contract text must be at least 30 characters."),
   jurisdiction: z.enum(jurisdictions).default("IN-MH"),
 });
 export type AnalysisRequest = z.infer<typeof analysisRequestSchema>;

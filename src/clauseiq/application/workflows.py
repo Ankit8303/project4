@@ -71,6 +71,7 @@ class AnalysisDeps:
     law_repo: LawRepository
     corpus_version: str
     disclaimer: str = DEFAULT_DISCLAIMER
+    web_fetcher: Any = None
 
 
 def _route_after_supervisor(state: AnalysisState) -> str:
@@ -84,7 +85,9 @@ def build_analysis_graph(deps: AnalysisDeps) -> Any:  # compiled LangGraph (unty
     """Assemble and compile the multi-agent ``StateGraph``."""
     graph: Any = StateGraph(AnalysisState)
     graph.add_node("supervisor", SupervisorAgent(deps.supervisor_llm))
-    graph.add_node("retriever", RetrieverAgent(deps.law_repo))
+    graph.add_node(
+        "retriever", RetrieverAgent(deps.law_repo, web_fetcher=deps.web_fetcher)
+    )
     graph.add_node("risk_analyzer", RiskAnalyzerAgent(deps.analyzer_llm))
     graph.add_node("citation_verifier", CitationVerifierAgent(deps.law_repo))
 
@@ -231,6 +234,9 @@ class ContractAnalyzer:
             flags=flag_outs,
             corpus_version=self._deps.corpus_version,
             disclaimer=self._deps.disclaimer,
+            contract_type=str(final.get("contract_type", "general")),
+            protecting_party=final.get("protecting_party"),
+            applicable_statutes=final.get("applicable_statutes", []),
         )
 
 
@@ -240,6 +246,8 @@ def _node_summary(node_name: str, final: dict[str, Any]) -> dict[str, Any]:
         return {
             "clauses": len(final.get("clauses", [])),
             "is_contract": bool(final.get("is_contract")),
+            "contract_type": final.get("contract_type", "general"),
+            "protecting_party": final.get("protecting_party"),
         }
     if node_name == "retriever":
         return {"law_sections": len(final.get("law_pool", []))}

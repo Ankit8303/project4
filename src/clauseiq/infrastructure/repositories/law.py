@@ -14,6 +14,7 @@ current, amended law.
 from __future__ import annotations
 
 from datetime import date
+from typing import Any
 
 from clauseiq.domain.entities import Chunk, Citation, ScoredChunk
 from clauseiq.domain.exceptions import (
@@ -23,7 +24,7 @@ from clauseiq.domain.exceptions import (
 )
 from clauseiq.domain.ports import Retriever, VectorStore
 from clauseiq.domain.result import Err, Ok, Result
-from clauseiq.domain.value_objects import Jurisdiction, LawCode
+from clauseiq.domain.value_objects import Jurisdiction, LawCode, register_statute_title
 from clauseiq.logging_config import get_logger
 
 log = get_logger(__name__)
@@ -43,11 +44,13 @@ def _parse_date(value: str | None) -> date | None:
         return None
 
 
-def _law_code(value: str | None) -> LawCode:
-    try:
-        return LawCode(value) if value else LawCode.OTHER
-    except ValueError:
+def _law_code(value: str | None) -> LawCode | str:
+    if not value:
         return LawCode.OTHER
+    try:
+        return LawCode(value)
+    except ValueError:
+        return value.strip()
 
 
 class ChromaLawRepository:
@@ -72,11 +75,12 @@ class ChromaLawRepository:
 
     async def get_section(
         self,
-        law_code: LawCode,
+        law_code: LawCode | str,
         section_number: str,
     ) -> Result[Citation, RepositoryError]:
         """Fetch a single statutory section as a :class:`Citation`."""
-        section_id = f"{law_code.value}:s{section_number}"
+        code_str = law_code.value if hasattr(law_code, "value") else str(law_code).strip()
+        section_id = f"{code_str}:s{section_number}"
         try:
             chunks = await self._store.get_all(where={"parent_section": section_id})
         except VectorStoreError as exc:
@@ -84,7 +88,7 @@ class ChromaLawRepository:
         if not chunks:
             return Err(
                 LawSectionNotFoundError(
-                    "section_not_found", law_code=law_code.value, section=section_number
+                    "section_not_found", law_code=code_str, section=section_number
                 )
             )
         return Ok(self.to_citation(chunks[0]))
@@ -94,13 +98,72 @@ class ChromaLawRepository:
         chunks = await self._store.get_all()
         return len({chunk.metadata.get("parent_section", chunk.id) for chunk in chunks})
 
+    async def has_statute(self, law_code: LawCode | str) -> bool:
+        """Return True if sections for this statute code exist in the vector store."""
+        code_str = law_code.value if hasattr(law_code, "value") else str(law_code).strip()
+        chunks = await self._store.get_all(where={"law_code": code_str})
+        return len(chunks) > 0
+
+    async def ingest_corpus(self, corpus: Any) -> int:
+        """Ingest a new LawCorpus directly into the store and register its title."""
+        from clauseiq.infrastructure.ingestion.chunker import build_default_chunker
+        from clauseiq.infrastructure.ingestion.law_ingestor import ingest_corpus
+        from clauseiq.infrastructure.vectorstore.embedder import SentenceTransformerEmbedder
+
+        embedder = SentenceTransformerEmbedder()
+        chunker = build_default_chunker()
+        report = await ingest_corpus(corpus, store=self._store, embedder=embedder, chunker=chunker)
+        register_statute_title(corpus.law_code, corpus.statute_title)
+        try:
+            from clauseiq.infrastructure.vectorstore.retrieval.bm25 import build_bm25_from_store
+            from clauseiq.infrastructure.vectorstore.retrieval.dense import DenseRetriever
+            from clauseiq.infrastructure.vectorstore.retrieval.hybrid import HybridRetriever
+
+            bm25 = await build_bm25_from_store(self._store)
+            dense = DenseRetriever(self._store, embedder)
+            self._retriever = HybridRetriever([dense, bm25])
+        except Exception as exc:
+            log.warning("failed_refreshing_retriever_index", error=str(exc))
+        return report.sections
+
+    async def list_statutes(self) -> list[dict[str, object]]:
+        """Return distinct statutes currently stored in the vector repository."""
+        chunks = await self._store.get_all()
+        statutes: dict[str, dict[str, object]] = {}
+        for chunk in chunks:
+            code = chunk.metadata.get("law_code") or "OTHER"
+            if code not in statutes:
+                statutes[code] = {
+                    "law_code": code,
+                    "statute_title": chunk.metadata.get("statute_title") or code,
+                    "source_url": chunk.metadata.get("source_url"),
+                    "sections": set(),
+                }
+            parent = chunk.metadata.get("parent_section") or chunk.id
+            statutes[code]["sections"].add(parent)  # type: ignore[union-attr]
+
+        return [
+            {
+                "law_code": s["law_code"],
+                "statute_title": s["statute_title"],
+                "source_url": s["source_url"],
+                "section_count": len(s["sections"]),  # type: ignore[arg-type]
+            }
+            for s in statutes.values()
+        ]
+
     @classmethod
     def to_citation(cls, chunk: Chunk, *, relevance_score: float | None = None) -> Citation:
         """Reconstruct a :class:`Citation` from a stored chunk's metadata."""
         metadata = chunk.metadata
+        code_val = metadata.get("law_code")
+        title_val = metadata.get("statute_title")
+        if code_val and title_val:
+            register_statute_title(code_val, title_val)
+
         clamped = max(0.0, min(1.0, relevance_score)) if relevance_score is not None else None
         return Citation(
-            law_code=_law_code(metadata.get("law_code")),
+            law_code=_law_code(code_val),
             section_number=metadata.get("section_number") or "?",
             section_title=metadata.get("section_title") or "Untitled",
             snippet=metadata.get("section_text") or chunk.text,

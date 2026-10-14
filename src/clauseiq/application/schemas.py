@@ -49,9 +49,21 @@ class SegmentedClause(BaseModel):
 
 
 class SegmentationResult(BaseModel):
-    """Supervisor output: clauses + retrieval queries (no free-text parsing)."""
+    """Supervisor output: clauses + dynamic legal profiling + retrieval queries."""
 
     is_contract: bool = Field(description="False if the input is not a contract.")
+    contract_type: str = Field(
+        default="general",
+        description="Identified contract category (e.g. employment, residential_lease, commercial_lease, software_saas, nda_confidentiality, services_freelance, consumer_b2c, vendor_procurement, general).",
+    )
+    protecting_party: str | None = Field(
+        default=None,
+        description="The vulnerable or negotiating party to protect (e.g. employee, tenant, freelancer, consumer, customer, licensee).",
+    )
+    applicable_statutes: list[str] = Field(
+        default_factory=list,
+        description="List of statute codes relevant to this contract category (e.g. ICA_1872, CPA_2019, SRA_1963, IT_ACT_2000, DPDP_2023).",
+    )
     clauses: list[SegmentedClause] = Field(default_factory=list)
     retrieval_queries: list[str] = Field(
         default_factory=list, description="Legal-topic queries to retrieve relevant law."
@@ -101,7 +113,7 @@ class RiskAnalysisResult(BaseModel):
 class ContractAnalysisRequest(BaseModel):
     """Request body for contract analysis."""
 
-    contract_text: str = Field(min_length=100, description="Raw contract text.")
+    contract_text: str = Field(min_length=30, description="Raw contract text.")
     jurisdiction: Jurisdiction = Jurisdiction.IN_MH
 
 
@@ -122,8 +134,9 @@ class CitationOut(BaseModel):
 
     @classmethod
     def from_domain(cls, citation: Citation, *, amendment_note: str | None = None) -> CitationOut:
+        code_str = citation.law_code.value if hasattr(citation.law_code, "value") else str(citation.law_code)
         return cls(
-            law_code=citation.law_code.value,
+            law_code=code_str,
             section_number=citation.section_number,
             section_title=citation.section_title,
             reference=citation.reference,
@@ -185,6 +198,9 @@ class ContractAnalysis(BaseModel):
 
     contract_id: str
     jurisdiction: str
+    contract_type: str = "general"
+    protecting_party: str | None = None
+    applicable_statutes: list[str] = Field(default_factory=list)
     flag_count: int
     highest_severity: str | None = None
     flags: list[RiskFlagOut] = Field(default_factory=list)
@@ -196,19 +212,26 @@ class ContractAnalysis(BaseModel):
         cls,
         *,
         contract_id: str,
-        jurisdiction: Jurisdiction,
+        jurisdiction: Jurisdiction | str,
         flags: list[RiskFlagOut],
         corpus_version: str,
         disclaimer: str,
+        contract_type: str = "general",
+        protecting_party: str | None = None,
+        applicable_statutes: list[str] | None = None,
     ) -> ContractAnalysis:
         highest = (
             max((Severity.from_score(f.severity_score) for f in flags), default=None)
             if flags
             else None
         )
+        jur_val = jurisdiction.value if hasattr(jurisdiction, "value") else str(jurisdiction)
         return cls(
             contract_id=contract_id,
-            jurisdiction=jurisdiction.value,
+            jurisdiction=jur_val,
+            contract_type=contract_type,
+            protecting_party=protecting_party,
+            applicable_statutes=applicable_statutes or [],
             flag_count=len(flags),
             highest_severity=highest.label if highest is not None else None,
             flags=flags,

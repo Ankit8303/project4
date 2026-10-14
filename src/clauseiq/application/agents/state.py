@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import TypedDict
 
 from clauseiq.application.schemas import AnalyzedFlag, SegmentedClause
-from clauseiq.domain.entities import RiskFlag, ScoredChunk
+from clauseiq.domain.entities import Citation, RiskFlag, ScoredChunk
 
 # Event names emitted as each node completes (consumed by the SSE stream).
 NODE_EVENTS: dict[str, str] = {
@@ -32,11 +32,15 @@ class AnalysisState(TypedDict, total=False):
 
     # --- supervisor (Flash) outputs ---
     is_contract: bool
+    contract_type: str
+    protecting_party: str | None
+    applicable_statutes: list[str]
     clauses: list[SegmentedClause]
     retrieval_queries: list[str]
 
     # --- retriever outputs ---
     law_pool: list[ScoredChunk]
+    web_citations: dict[str, Citation]
 
     # --- risk analyzer (Pro) outputs ---
     raw_flags: list[AnalyzedFlag]

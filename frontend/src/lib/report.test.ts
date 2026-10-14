@@ -5,6 +5,8 @@ import { describe, expect, it } from "vitest";
 const MOCK_ANALYSIS: ContractAnalysis = {
   contract_id: "test-contract-123",
   jurisdiction: "IN-MH",
+  contract_type: "employment",
+  applicable_statutes: ["ICA_1872"],
   flag_count: 2,
   highest_severity: "critical",
   corpus_version: "ICA-1872-v1",

@@ -28,22 +28,42 @@ log = get_logger(__name__)
 
 _TOKEN_RE = re.compile(r"[a-z0-9]+")
 
-_SYSTEM = (
-    "You are an expert Indian contract lawyer protecting the weaker party "
-    "(a tenant, employee, freelancer, or small business). For each clause, decide "
+_BASE_SYSTEM = (
+    "You are an expert contract lawyer protecting the weaker party "
+    "(such as a tenant, employee, freelancer, consumer, or licensee). For each clause, decide "
     "if it is unfair or legally risky to that party and assign a severity from 1 to 5:\n"
     "  1 = info (standard/benign)\n"
     "  2 = low (minor, usually acceptable)\n"
     "  3 = medium (notable; negotiate)\n"
     "  4 = high (seriously one-sided or likely unenforceable)\n"
-    "  5 = critical (egregious / void or illegal under Indian law)\n"
+    "  5 = critical (egregious / void or illegal under applicable law)\n"
     "Only flag clauses that are genuinely risky. Cite ONLY sections present in the "
-    "provided law context, using their law_code and section_number. If no provided "
+    "provided law context, using their exact law_code and section_number. If no provided "
     "section applies, return an empty citations list rather than inventing one.\n"
     "For each flagged clause, also draft a legally fair, balanced counter-clause "
     "(suggested_revision), explain the negotiation rationale, and provide a polite "
     "email snippet the user can send to negotiate the clause."
 )
+
+
+def _build_system_prompt(contract_type: str = "general", protecting_party: str | None = None) -> str:
+    party_desc = protecting_party or "the vulnerable or negotiating party"
+    return (
+        f"You are an expert contract lawyer evaluating a contract categorized as '{contract_type}'. "
+        f"Your mission is to protect {party_desc}. For each clause, decide if it is unfair, one-sided, "
+        "or legally risky to that party and assign a severity from 1 to 5:\n"
+        "  1 = info (standard/benign)\n"
+        "  2 = low (minor, usually acceptable)\n"
+        "  3 = medium (notable; negotiate)\n"
+        "  4 = high (seriously one-sided or likely unenforceable)\n"
+        "  5 = critical (egregious / void or illegal under applicable law)\n"
+        "Only flag clauses that are genuinely risky. Cite ONLY sections present in the "
+        "provided law context, using their exact law_code and section_number. If no provided "
+        "section applies, return an empty citations list rather than inventing one.\n"
+        "For each flagged clause, also draft a legally fair, balanced counter-clause "
+        "(suggested_revision), explain the negotiation rationale, and provide a polite "
+        "email snippet the user can send to negotiate the clause."
+    )
 
 _CLAUSE_TYPE_VOCAB = ", ".join(member.value for member in ClauseType)
 
@@ -115,9 +135,13 @@ class RiskAnalyzerAgent:
             return {"raw_flags": []}
 
         prompt = self._build_prompt(clauses, pool)
+        contract_type = str(state.get("contract_type", "general"))
+        protecting_party = state.get("protecting_party")
+        system_prompt = _build_system_prompt(contract_type, protecting_party)
+
         for attempt in range(self._max_parse_retries + 1):
             result = await self._llm.generate_structured(
-                prompt, RiskAnalysisResult, system=_SYSTEM, temperature=0.2
+                prompt, RiskAnalysisResult, system=system_prompt, temperature=0.2
             )
             if result.is_ok():
                 flags = result.unwrap().flags

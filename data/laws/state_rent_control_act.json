@@ -1,0 +1,52 @@
+{
+  "law_code": "STATE_RENT_CONTROL_ACT",
+  "statute_title": "State Rent Control Act",
+  "version": "STATE_RENT_CONTROL_ACT-web-2026-10-14",
+  "source_url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH92AMo9DlCAEYnrIAb5UCx3Z_tXPACA9b9F0rS_SA7pqzQyIFFqyu7SQ4dKrvvodBDGy6gIHxa6rOLFIbO_VnlKrgWpuMkkzYxixmukwyeNfEtIy5It-YM-6Vh5RUIc3IimB1ruiZMIzGXI9Wa-wtg97Xt65-SiCL3cY_kTfEz7OdGkQ==",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "1",
+      "section_title": "Short title, extent and commencement - This section establishes the official name of the Act, specifies its geographical applicability to areas within the New Delhi Municipal Committee, the Delhi Cantonment Board, and certain urban areas of the Municipal Corporation of Delhi, and states its effective",
+      "section_text": "1. Short title, extent and commencement - This section establishes the official name of the Act, specifies its geographical applicability to areas within the New Delhi Municipal Committee, the Delhi Cantonment Board, and certain urban areas of the Municipal Corporation of Delhi, and states its effective - date.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "14",
+      "section_title": "Protection of tenant against eviction - This section provides that no order for the recovery of possession of any premises shall be made against a tenant by any court or Controller, except on specific grounds detailed in the Act, such as non-payment of rent, subletting without the landlord's written consent, using the premises for an unauthorized purpose, or the landlord's bona fide requirement for the",
+      "section_text": "14. Protection of tenant against eviction - This section provides that no order for the recovery of possession of any premises shall be made against a tenant by any court or Controller, except on specific grounds detailed in the Act, such as non-payment of rent, subletting without the landlord's written consent, using the premises for an unauthorized purpose, or the landlord's bona fide requirement for the - premises.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "26",
+      "section_title": "Receipt to be given for rent paid - This section mandates that every tenant must pay rent within the time fixed by contract or by the fifteenth day of the following month, and is entitled to receive a written receipt from the landlord or their authorized agent for the amount",
+      "section_text": "26. Receipt to be given for rent paid - This section mandates that every tenant must pay rent within the time fixed by contract or by the fifteenth day of the following month, and is entitled to receive a written receipt from the landlord or their authorized agent for the amount - paid. If the landlord or agent refuses or neglects to provide a receipt, the Controller may, upon application by the tenant, direct the landlord to pay damages not exceeding double the rent paid, along with the costs of the application.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "25",
+      "section_title": "Penalties - This section stipulates that any person who contravenes the provisions of the Act, including landlords and tenants, may be subject to penalties, which can include fines or imprisonment, as determined by the Rent Controller or the",
+      "section_text": "25. Penalties - This section stipulates that any person who contravenes the provisions of the Act, including landlords and tenants, may be subject to penalties, which can include fines or imprisonment, as determined by the Rent Controller or the - Tribunal.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}

@@ -269,6 +269,15 @@ def test_law_drilldown_found_and_not_found() -> None:
     assert missing.status_code == 404
 
 
+def test_list_laws_endpoint() -> None:
+    with _client() as client:
+        response = client.get("/api/v1/laws")
+    assert response.status_code == 200
+    data = response.json()
+    assert "statutes" in data
+    assert "total_sections" in data
+
+
 def test_healthz() -> None:
     with _client() as client:
         assert client.get("/healthz").json() == {"status": "ok"}

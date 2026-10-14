@@ -62,6 +62,9 @@ class _FakeLawRepository:
     async def count(self) -> int:
         return 0
 
+    async def has_statute(self, law_code: LawCode | str) -> bool:
+        return True
+
 
 def test_conforming_objects_satisfy_protocols() -> None:
     assert isinstance(_FakeEmbedder(), Embedder)
