@@ -35,13 +35,13 @@ export function ExportReportModal({ analysis }: ExportReportModalProps) {
 
   const handleDownloadMarkdown = () => {
     const text = generateMarkdownReport(analysis);
-    downloadTextFile(`ClauseIQ-Audit-Report-${analysis.contract_id}.md`, text, "text/markdown");
+    downloadTextFile(`NyayaShield-Audit-Report-${analysis.contract_id}.md`, text, "text/markdown");
     toast.success("Downloaded Markdown audit report");
   };
 
   const handleDownloadJson = () => {
     const json = JSON.stringify(analysis, null, 2);
-    downloadTextFile(`ClauseIQ-Audit-${analysis.contract_id}.json`, json, "application/json");
+    downloadTextFile(`NyayaShield-Audit-${analysis.contract_id}.json`, json, "application/json");
     toast.success("Downloaded JSON audit data");
   };
 

@@ -8,30 +8,33 @@ export default function About() {
   return (
     <div className="mx-auto max-w-2xl space-y-8 py-4">
       <header className="space-y-2">
-        <h1 className="font-bold text-3xl tracking-tight">About ClauseIQ</h1>
+        <h1 className="font-bold text-3xl tracking-tight">About NyayaShield</h1>
         <p className="text-muted-foreground">
-          A multi-agent system that analyses Indian contracts and grounds every finding in the law.
+          A multi-agent AI copilot that audits Indian contracts, detects hidden traps, and grounds
+          every finding in statutory law.
         </p>
       </header>
 
       <section className="space-y-3 text-sm leading-relaxed">
         <p>
-          A supervisor agent segments the contract into clauses, a retriever pulls the relevant
-          sections of the Indian Contract Act, 1872 using hybrid search, a risk analyzer scores each
-          clause from 1–5, and a citation verifier checks every cited section actually exists — so
-          the analysis is grounded, not guessed. You watch each step happen live as it streams.
+          A supervisor agent segments contracts into individual clauses, a retriever pulls relevant
+          statutory provisions from the Indian Contract Act 1872, Specific Relief Act 1963, and
+          Consumer Protection Act 2019 using hybrid retrieval, a risk analyzer scores clauses from
+          1–5, and a citation verifier checks every cited section against the statutory corpus to
+          eliminate AI hallucinations.
         </p>
         <p>
-          The web app uses Google Gemini (free tier). The same tools are also exposed over MCP, so
-          you can drive ClauseIQ directly from Claude Desktop.
+          NyayaShield also features interactive grounded Q&A ("Chat with Contract"), side-by-side
+          contract version diffing to catch stealth modifications by counterparties, and
+          comprehensive legal audit report exports.
         </p>
       </section>
 
       <Card>
         <CardContent className="flex flex-col items-start gap-3 pt-6">
-          <h2 className="font-medium">Use it inside Claude Desktop</h2>
+          <h2 className="font-medium">Use it inside Claude Desktop & MCP</h2>
           <p className="text-muted-foreground text-sm">
-            Install the MCP server and ask Claude to analyse contracts or look up Indian law.
+            Install the MCP server and ask AI assistants to analyse contracts or look up Indian law.
           </p>
           <Button asChild variant="outline" size="sm">
             <a href={MCP_INSTALL_URL} target="_blank" rel="noreferrer">
@@ -43,8 +46,8 @@ export default function About() {
       </Card>
 
       <p className="text-muted-foreground text-xs">
-        ClauseIQ is automated decision-support, not legal advice. Amendment history is not tracked;
-        verify current law for time-sensitive matters.
+        NyayaShield is automated decision-support, not legal advice. Amendment history is not
+        tracked; verify current law for time-sensitive matters.
       </p>
     </div>
   );

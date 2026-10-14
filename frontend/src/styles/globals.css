@@ -32,64 +32,66 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: "Outfit", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.985 0.008 250);
+  --foreground: oklch(0.15 0.035 265);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.15 0.035 265);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.15 0.035 265);
+  --primary: oklch(0.48 0.22 260);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.02 255);
+  --secondary-foreground: oklch(0.22 0.06 260);
+  --muted: oklch(0.95 0.015 255);
+  --muted-foreground: oklch(0.48 0.035 260);
+  --accent: oklch(0.93 0.035 255);
+  --accent-foreground: oklch(0.2 0.08 260);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.89 0.025 255);
+  --input: oklch(0.89 0.025 255);
+  --ring: oklch(0.48 0.22 260);
 
-  --severity-info: oklch(0.62 0.05 240);
-  --severity-low: oklch(0.7 0.13 150);
-  --severity-medium: oklch(0.78 0.15 85);
-  --severity-high: oklch(0.7 0.17 50);
-  --severity-critical: oklch(0.6 0.22 25);
+  --severity-info: oklch(0.62 0.08 245);
+  --severity-low: oklch(0.7 0.14 155);
+  --severity-medium: oklch(0.78 0.16 85);
+  --severity-high: oklch(0.7 0.18 45);
+  --severity-critical: oklch(0.58 0.23 25);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --background: oklch(0.115 0.028 262);
+  --foreground: oklch(0.975 0.01 255);
+  --card: oklch(0.155 0.035 262);
+  --card-foreground: oklch(0.975 0.01 255);
+  --popover: oklch(0.145 0.035 262);
+  --popover-foreground: oklch(0.975 0.01 255);
+  --primary: oklch(0.62 0.23 258);
+  --primary-foreground: oklch(0.99 0.005 260);
+  --secondary: oklch(0.21 0.04 262);
+  --secondary-foreground: oklch(0.92 0.02 255);
+  --muted: oklch(0.19 0.03 262);
+  --muted-foreground: oklch(0.68 0.035 255);
+  --accent: oklch(0.23 0.05 260);
+  --accent-foreground: oklch(0.96 0.01 255);
+  --destructive: oklch(0.68 0.21 22);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: oklch(0.27 0.04 260 / 65%);
+  --input: oklch(0.24 0.04 260 / 75%);
+  --ring: oklch(0.62 0.23 258);
 
-  --severity-info: oklch(0.7 0.06 240);
-  --severity-low: oklch(0.78 0.14 150);
-  --severity-medium: oklch(0.83 0.15 85);
-  --severity-high: oklch(0.75 0.17 50);
-  --severity-critical: oklch(0.68 0.21 25);
+  --severity-info: oklch(0.7 0.08 245);
+  --severity-low: oklch(0.78 0.15 155);
+  --severity-medium: oklch(0.83 0.16 85);
+  --severity-high: oklch(0.75 0.18 45);
+  --severity-critical: oklch(0.68 0.22 25);
 }
 
 @layer base {
@@ -101,5 +103,14 @@
     color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
   }
 }

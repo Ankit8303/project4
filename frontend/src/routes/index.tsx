@@ -33,8 +33,8 @@ export default function Landing() {
           Know what you're signing.
         </h1>
         <p className="mx-auto max-w-xl text-balance text-muted-foreground">
-          ClauseIQ reads an Indian contract, flags clauses that are unfair to you with a severity
-          score, and cites the exact section of Indian law behind each flag.
+          NyayaShield reads your contract, uncovers hidden traps and unfair clauses with severity
+          scoring, and cites the exact provisions of Indian law behind each finding.
         </p>
       </motion.section>
 
