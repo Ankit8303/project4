@@ -62,4 +62,23 @@ async def get_contract_analyzer(request: Request) -> ContractAnalyzer:
     return analyzer
 
 
-__all__ = ["get_contract_analyzer", "get_law_repository"]
+async def get_contract_chat_service(request: Request) -> ContractChatService:
+    """Return the shared contract chat service, building it once on first use."""
+    from clauseiq.application.chat import ContractChatService
+
+    state = request.app.state
+    service: ContractChatService | None = getattr(state, "chat_service", None)
+    if service is not None:
+        return service
+    repo = await get_law_repository(request)
+    async with _build_lock:
+        service = getattr(state, "chat_service", None)
+        if service is None:
+            llm = get_llm_client(LLMRole.ANALYSIS)
+            service = ContractChatService(llm=llm, law_repo=repo)
+            state.chat_service = service
+            log.info("built_contract_chat_service")
+    return service
+
+
+__all__ = ["get_contract_analyzer", "get_contract_chat_service", "get_law_repository"]

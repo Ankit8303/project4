@@ -1,8 +1,11 @@
 import {
   type AnalysisRequest,
   type ContractAnalysis,
+  type ContractChatRequest,
+  type ContractChatResponse,
   type LawSection,
   contractAnalysisSchema,
+  contractChatResponseSchema,
   lawSectionSchema,
 } from "@/lib/schemas";
 
@@ -77,4 +80,26 @@ export async function fetchLawSection(
     throw new ApiError(`Section not found (HTTP ${response.status})`, response.status, body);
   }
   return lawSectionSchema.parse(body);
+}
+
+/** Ask a grounded question about a contract and get verified citations. */
+export async function askContractQuestion(
+  request: ContractChatRequest,
+  signal?: AbortSignal,
+): Promise<ContractChatResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+    signal,
+  });
+  const body = await readJson(response);
+  if (!response.ok) {
+    throw new ApiError(
+      extractReason(body) ?? `Chat query failed (HTTP ${response.status})`,
+      response.status,
+      body,
+    );
+  }
+  return contractChatResponseSchema.parse(body);
 }

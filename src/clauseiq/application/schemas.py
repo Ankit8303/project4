@@ -258,11 +258,60 @@ class VerificationResult(BaseModel):
     matched_section: LawSectionOut | None = None
 
 
+# --- Contract Chat I/O -------------------------------------------------------
+
+
+class ChatMessage(BaseModel):
+    """A single turn in the contract chat history."""
+
+    role: str = Field(description="'user' or 'assistant'")
+    content: str = Field(min_length=1)
+
+
+class ContractChatRequest(BaseModel):
+    """Request body for conversational Q&A on a contract."""
+
+    contract_text: str = Field(min_length=50, description="Raw contract text.")
+    question: str = Field(min_length=2, description="The user question about the contract.")
+    chat_history: list[ChatMessage] = Field(
+        default_factory=list, description="Recent conversation turns."
+    )
+    jurisdiction: Jurisdiction = Jurisdiction.IN_MH
+
+
+class ContractChatStructuredResult(BaseModel):
+    """LLM structured output for contract chat."""
+
+    answer: str = Field(
+        description="Direct, comprehensive answer grounded in contract and Indian law."
+    )
+    relevant_clause_excerpts: list[str] = Field(
+        default_factory=list,
+        description="Verbatim excerpts from the contract text that support the answer.",
+    )
+    citations: list[ProposedCitation] = Field(
+        default_factory=list,
+        description="Indian statutory sections (law_code, section_number) cited in the answer.",
+    )
+
+
+class ContractChatResponse(BaseModel):
+    """Response returned to user with verified legal citations."""
+
+    answer: str
+    relevant_clause_excerpts: list[str] = Field(default_factory=list)
+    citations: list[CitationOut] = Field(default_factory=list)
+
+
 __all__ = [
     "AnalyzedFlag",
+    "ChatMessage",
     "CitationOut",
     "ContractAnalysis",
     "ContractAnalysisRequest",
+    "ContractChatRequest",
+    "ContractChatResponse",
+    "ContractChatStructuredResult",
     "LawSectionOut",
     "ProposedCitation",
     "RiskAnalysisResult",

@@ -98,3 +98,24 @@ export const doneEventDataSchema = z.object({
   usage: z.object({ total_tokens: z.number(), cost_usd: z.number() }).partial().optional(),
 });
 export type DoneEventData = z.infer<typeof doneEventDataSchema>;
+
+export const chatMessageSchema = z.object({
+  role: z.enum(["user", "assistant"]),
+  content: z.string(),
+});
+export type ChatMessage = z.infer<typeof chatMessageSchema>;
+
+export const contractChatRequestSchema = z.object({
+  contract_text: z.string().min(50),
+  question: z.string().min(2),
+  chat_history: z.array(chatMessageSchema).default([]),
+  jurisdiction: z.enum(jurisdictions).default("IN-MH"),
+});
+export type ContractChatRequest = z.infer<typeof contractChatRequestSchema>;
+
+export const contractChatResponseSchema = z.object({
+  answer: z.string(),
+  relevant_clause_excerpts: z.array(z.string()).default([]),
+  citations: z.array(citationSchema).default([]),
+});
+export type ContractChatResponse = z.infer<typeof contractChatResponseSchema>;

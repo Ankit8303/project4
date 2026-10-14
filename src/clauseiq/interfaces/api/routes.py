@@ -21,16 +21,23 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
+from clauseiq.application.chat import ContractChatService
 from clauseiq.application.schemas import (
     ContractAnalysis,
     ContractAnalysisRequest,
+    ContractChatRequest,
+    ContractChatResponse,
     LawSectionOut,
 )
 from clauseiq.application.workflows import ContractAnalyzer
 from clauseiq.domain.exceptions import GuardrailError
 from clauseiq.domain.ports import LawRepository
 from clauseiq.domain.value_objects import LawCode
-from clauseiq.interfaces.api.dependencies import get_contract_analyzer, get_law_repository
+from clauseiq.interfaces.api.dependencies import (
+    get_contract_analyzer,
+    get_contract_chat_service,
+    get_law_repository,
+)
 from clauseiq.logging_config import get_logger
 
 log = get_logger(__name__)
@@ -39,6 +46,7 @@ router = APIRouter()
 
 AnalyzerDep = Annotated[ContractAnalyzer, Depends(get_contract_analyzer)]
 LawRepoDep = Annotated[LawRepository, Depends(get_law_repository)]
+ChatServiceDep = Annotated[ContractChatService, Depends(get_contract_chat_service)]
 
 
 def _parse_section_id(section_id: str) -> tuple[LawCode, str]:
@@ -86,6 +94,26 @@ async def analyze_stream(
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+@router.post("/api/v1/chat", response_model=ContractChatResponse, tags=["chat"])
+async def chat_with_contract(
+    request: ContractChatRequest, chat_service: ChatServiceDep
+) -> ContractChatResponse:
+    """Ask a question about a contract and receive a grounded response with verified citations."""
+    result = await chat_service.ask(request)
+    if result.is_err():
+        error = result.unwrap_err()
+        if isinstance(error, GuardrailError):
+            raise HTTPException(
+                status_code=422,
+                detail={"error": "rejected", "reason": error.message, **error.context},
+            )
+        status = 503 if "api_key" in error.message else 502
+        raise HTTPException(
+            status_code=status, detail={"error": "chat_failed", "reason": error.message}
+        )
+    return result.unwrap()
 
 
 @router.get("/api/v1/law/{section_id}", response_model=LawSectionOut, tags=["law"])
