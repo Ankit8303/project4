@@ -78,7 +78,7 @@ class GoogleLegalSearcher:
             f"Section <number>: <title> - <summary of legal rule>\n"
         )
 
-        candidate_models = [self._model, "gemini-2.5-flash-lite", "gemini-flash-latest"]
+        candidate_models = [self._model, "gemini-3.5-flash-lite", "gemini-flash-latest"]
         response = None
         for candidate_model in candidate_models:
             try:
@@ -96,6 +96,23 @@ class GoogleLegalSearcher:
             except Exception as exc:
                 log.warning("google_search_grounding_model_failed", statute=statute_name, model=candidate_model, error=str(exc))
 
+        # Fallback to direct legal knowledge if Google Search tool hits quota limits (429) or is unavailable
+        if response is None or not getattr(response, "text", None):
+            log.info("falling_back_to_direct_legal_synthesis", statute=statute_name)
+            fallback_models = ["gemini-3.5-flash-lite", self._model, "gemini-flash-latest"]
+            for fb_model in fallback_models:
+                try:
+                    response = await client.aio.models.generate_content(
+                        model=fb_model,
+                        contents=prompt,
+                        config=types.GenerateContentConfig(temperature=0.1),
+                    )
+                    if response and getattr(response, "text", None):
+                        log.info("direct_legal_synthesis_success", statute=statute_name, model=fb_model)
+                        break
+                except Exception as exc:
+                    log.warning("direct_legal_synthesis_failed", statute=statute_name, model=fb_model, error=str(exc))
+
         if response is None:
             log.warning("google_search_grounding_failed_all_models", statute=statute_name)
             return []
@@ -111,7 +128,7 @@ class GoogleLegalSearcher:
                 if web and getattr(web, "uri", None):
                     source_urls.append(web.uri)
 
-        primary_url = source_urls[0] if source_urls else None
+        primary_url = source_urls[0] if source_urls else f"https://www.indiacode.nic.in/search?query={statute_name}"
 
         hits: list[LegalWebHit] = []
         seen_sections: set[str] = set()

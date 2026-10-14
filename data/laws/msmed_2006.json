@@ -1,0 +1,52 @@
+{
+  "law_code": "MSMED_2006",
+  "statute_title": "Micro, Small and Medium Enterprises Development Act, 2006",
+  "version": "MSMED_2006-web-2026-10-14",
+  "source_url": "https://www.indiacode.nic.in",
+  "source_fetched_at": "2026-10-14",
+  "effective_date": "2026-10-14",
+  "license_note": "Government of India legal text (public domain under s.52(1)(q), Copyright Act 1957).",
+  "disclaimer": "Per-section 'last_amended' is null where an amendment date could not be reliably derived from the source. Amendment history is NOT tracked in this corpus (is_amendment_history_known=false). Verify current law for time-sensitive matters.",
+  "sections": [
+    {
+      "section_number": "8",
+      "section_title": "Memorandum of micro, small and medium enterprises - Specifies the procedure for any person who intends to establish a micro, small or medium enterprise to file a memorandum with the designated authority, providing the manner of registration and classification of",
+      "section_text": "8. Memorandum of micro, small and medium enterprises - Specifies the procedure for any person who intends to establish a micro, small or medium enterprise to file a memorandum with the designated authority, providing the manner of registration and classification of - enterprises.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "15",
+      "section_title": "Liability of buyer to make payment - Mandates that where any supplier supplies goods or services to any buyer, the buyer shall make payment therefor on or before the agreed date or, where there is no agreement, before the appointed day (not exceeding forty-five days from the day of",
+      "section_text": "15. Liability of buyer to make payment - Mandates that where any supplier supplies goods or services to any buyer, the buyer shall make payment therefor on or before the agreed date or, where there is no agreement, before the appointed day (not exceeding forty-five days from the day of - acceptance).",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "16",
+      "section_title": "Date from which and rate at which interest is payable - Establishes the statutory liability of the buyer to pay compound interest with monthly rests to the supplier at three times the bank rate notified by the Reserve Bank of India, in case the buyer fails to make payment on the due date under Section",
+      "section_text": "16. Date from which and rate at which interest is payable - Establishes the statutory liability of the buyer to pay compound interest with monthly rests to the supplier at three times the bank rate notified by the Reserve Bank of India, in case the buyer fails to make payment on the due date under Section - 15.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    },
+    {
+      "section_number": "22",
+      "section_title": "Requirement to specify unpaid amount and interest due in the annual statement of accounts - Imposes a mandatory compliance requirement on any buyer who supplies goods or services from a supplier to disclose in their annual statement of accounts any overdue amounts owed to micro and small enterprises, along with the interest accrued",
+      "section_text": "22. Requirement to specify unpaid amount and interest due in the annual statement of accounts - Imposes a mandatory compliance requirement on any buyer who supplies goods or services from a supplier to disclose in their annual statement of accounts any overdue amounts owed to micro and small enterprises, along with the interest accrued - thereon.",
+      "effective_date": null,
+      "last_amended": null,
+      "source_fetched_at": "2026-10-14",
+      "version": "unversioned",
+      "is_amendment_history_known": false
+    }
+  ]
+}
