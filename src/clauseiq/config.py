@@ -62,8 +62,8 @@ class Settings(BaseSettings):
     # SecretStr so the key never appears in logs, reprs, or tracebacks; read it
     # explicitly with `.get_secret_value()` only where the SDK needs it.
     gemini_api_key: SecretStr = SecretStr("")
-    orchestration_model: str = "gemini-2.5-flash"
-    analysis_model: str = "gemini-2.5-pro"
+    orchestration_model: str = "gemini-3.5-flash-lite"
+    analysis_model: str = "gemini-3.5-flash-lite"
 
     # Provider for Gemini: "ai_studio" (API key) or "vertex" (Vertex AI on GCP,
     # auth via Application Default Credentials — no key, billed to the GCP project).

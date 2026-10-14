@@ -71,7 +71,7 @@ class RetrieverAgent:
                 try:
                     corpus = await asyncio.wait_for(
                         self._web_fetcher.fetch_statute(norm_code),
-                        timeout=25.0,
+                        timeout=3.0,
                     )
                     if corpus and hasattr(self._law_repo, "ingest_corpus"):
                         await self._law_repo.ingest_corpus(corpus)  # type: ignore[union-attr]

@@ -18,9 +18,9 @@ services:
       - key: CLAUSEIQ_CHROMA_MODE
         value: embedded
       - key: CLAUSEIQ_ORCHESTRATION_MODEL
-        value: gemini-2.5-flash
+        value: gemini-3.5-flash-lite
       - key: CLAUSEIQ_ANALYSIS_MODEL
-        value: gemini-2.5-pro
+        value: gemini-3.5-flash-lite
       - key: CLAUSEIQ_GEMINI_API_KEY
         sync: false
       - key: CLAUSEIQ_CORS_ALLOWED_ORIGINS
